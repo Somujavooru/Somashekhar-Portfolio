@@ -111,8 +111,8 @@ export const ThreeSceneContainer: React.FC<ThreeSceneProps> = ({ className = '' 
         <Suspense fallback={<CanvasFallback />}>
           <Canvas
             camera={{
-              position: [0, 0, isMobile ? 6.2 : 5.2],
-              fov: isMobile ? 45 : 42,
+              position: [0, 0, isMobile ? 5.6 : 4.9],
+              fov: isMobile ? 44 : 40,
               near: 0.1,
               far: 100,
             }}
@@ -133,14 +133,14 @@ export const ThreeSceneContainer: React.FC<ThreeSceneProps> = ({ className = '' 
         </Suspense>
       </CanvasErrorBoundary>
 
-      {/* Floating HUD Telemetry Overlay on the 3D canvas */}
-      <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between text-[11px] font-mono-tech text-cyan-400/60 pointer-events-none select-none">
+      {/* Floating HUD Telemetry Pill */}
+      <div className="absolute bottom-3 left-3 right-3 sm:left-4 sm:right-4 flex items-center justify-between text-[10px] sm:text-[11px] font-mono-tech text-cyan-300 pointer-events-none select-none px-3 py-1.5 rounded-lg bg-[#060b18]/85 border border-cyan-500/25 backdrop-blur-md shadow-lg shadow-black/40">
         <div className="flex items-center gap-2">
           <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
           <span>CORE_ARCH :: 32-BIT XTENSA</span>
         </div>
-        <div className="hidden sm:block text-slate-500">
-          RTOS_HZ :: 1000 | DMA_CH :: READY
+        <div className="text-slate-400">
+          RTOS_HZ :: 1000 | 240MHz
         </div>
       </div>
     </div>

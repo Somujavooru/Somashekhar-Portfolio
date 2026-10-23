@@ -78,7 +78,7 @@ export const SkillsSection: React.FC = () => {
                 key={group.id}
                 className={`rounded-2xl p-6 transition-all duration-300 flex flex-col justify-between ${
                   isFirmware
-                    ? 'bg-gradient-to-b from-[#0c1832] to-[#070e1c] border-2 border-cyan-500/40 shadow-xl shadow-cyan-500/10 md:col-span-2 lg:col-span-1'
+                    ? 'bg-gradient-to-b from-[#0c1834] to-[#070e1c] border-2 border-cyan-500/45 shadow-xl shadow-cyan-500/15 md:col-span-2 lg:col-span-1'
                     : 'bg-[#090f1d] border border-slate-800/80 hover:border-cyan-500/30'
                 }`}
               >
@@ -86,7 +86,7 @@ export const SkillsSection: React.FC = () => {
                   {/* Group Header */}
                   <div className="flex items-start justify-between gap-3 mb-4">
                     <div className="flex items-center gap-2.5">
-                      <div className="p-2.5 rounded-xl bg-[#0e1b34] border border-cyan-500/20">
+                      <div className="p-2.5 rounded-xl bg-[#0e1b34] border border-cyan-500/30">
                         {getIcon(group.iconName)}
                       </div>
                       <div>
@@ -94,8 +94,8 @@ export const SkillsSection: React.FC = () => {
                           {group.title}
                         </h3>
                         {isFirmware && (
-                          <span className="text-[10px] font-mono-tech text-cyan-400 uppercase tracking-widest">
-                            Primary Focus Area
+                          <span className="text-[10px] font-mono-tech text-cyan-400 font-bold uppercase tracking-widest block mt-0.5">
+                            ★ Primary Focus Area
                           </span>
                         )}
                       </div>
@@ -111,16 +111,16 @@ export const SkillsSection: React.FC = () => {
                     {group.skills.map((skill, sIdx) => (
                       <div
                         key={sIdx}
-                        className="p-2.5 rounded-lg bg-[#060b16] border border-slate-800/80 hover:border-cyan-500/20 transition-colors flex items-center justify-between gap-2 text-xs"
+                        className="p-3 rounded-lg bg-[#060b16] border border-slate-800/80 hover:border-cyan-500/30 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 text-xs"
                       >
-                        <div className="flex items-center gap-2 min-w-0">
+                        <div className="flex items-center gap-2">
                           <Check className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
-                          <span className="font-medium text-slate-200 truncate">
+                          <span className="font-semibold text-slate-100">
                             {skill.name}
                           </span>
                         </div>
                         {skill.hardwareOrStandard && (
-                          <span className="font-mono-tech text-[10px] text-slate-400 shrink-0 bg-slate-900 px-2 py-0.5 rounded border border-slate-800">
+                          <span className="font-mono-tech text-[10px] text-cyan-300/80 bg-slate-900/90 px-2 py-0.5 rounded border border-slate-800 self-start sm:self-auto">
                             {skill.hardwareOrStandard}
                           </span>
                         )}

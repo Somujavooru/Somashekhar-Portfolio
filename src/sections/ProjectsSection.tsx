@@ -6,7 +6,7 @@ import { GithubIcon } from '../components/common/SocialIcons';
 import { ProjectIllustration } from '../components/common/ProjectIllustrations';
 import { ProjectModal } from '../components/modals/ProjectModal';
 import type { Project, ProjectCategory } from '../types';
-import { Layers, ArrowUpRight, CheckCircle, Image as ImageIcon, GitFork } from 'lucide-react';
+import { Layers, ArrowUpRight, CheckCircle, Image as ImageIcon, GitFork, Cpu } from 'lucide-react';
 
 type FilterType = 'all' | ProjectCategory;
 
@@ -88,12 +88,16 @@ export const ProjectsSection: React.FC = () => {
             return (
               <div
                 key={project.id}
-                className="group rounded-2xl bg-[#090f1e] border border-slate-800/80 hover:border-cyan-500/40 transition-all duration-300 flex flex-col justify-between overflow-hidden hover:shadow-2xl hover:shadow-cyan-500/10 hover:-translate-y-1"
+                className={`group rounded-2xl border transition-all duration-300 flex flex-col justify-between overflow-hidden hover:shadow-2xl hover:shadow-cyan-500/10 hover:-translate-y-1 ${
+                  project.isPrimaryEmbedded
+                    ? 'bg-gradient-to-b from-[#0b1428] to-[#070d1a] border-cyan-500/30 hover:border-cyan-400/60'
+                    : 'bg-[#090f1e] border-slate-800/80 hover:border-sky-500/40'
+                }`}
               >
-                {/* Visual Area: Verified Image or Technical SVG Diagram */}
+                {/* Visual Header: Verified Image or Technical CAD Blueprint */}
                 <div className="relative overflow-hidden bg-[#050810]">
                   {project.hasVerifiedScreenshot && project.image ? (
-                    <div className="w-full h-48 relative overflow-hidden group-hover:scale-105 transition-transform duration-500">
+                    <div className="w-full h-52 relative overflow-hidden group-hover:scale-105 transition-transform duration-500">
                       <img
                         src={project.image}
                         alt={project.imageAlt || project.title}
@@ -101,50 +105,57 @@ export const ProjectsSection: React.FC = () => {
                         loading="lazy"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-[#090f1e] via-transparent to-transparent opacity-80" />
-                      <div className="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-emerald-950/80 border border-emerald-500/40 text-emerald-300 font-mono-tech text-[10px] flex items-center gap-1.5 backdrop-blur-sm">
-                        <ImageIcon className="w-3 h-3 text-emerald-400" />
-                        <span>VERIFIED BUILD PHOTO</span>
-                      </div>
                     </div>
                   ) : (
                     <div>
                       <ProjectIllustration projectId={project.id} />
-                      <div className="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-cyan-950/80 border border-cyan-500/30 text-cyan-300 font-mono-tech text-[10px] flex items-center gap-1.5 backdrop-blur-sm">
-                        <Layers className="w-3 h-3 text-cyan-400" />
-                        <span>TECHNICAL ARCHITECTURE ILLUSTRATION</span>
-                      </div>
                     </div>
                   )}
 
-                  {/* Fork badge if applicable */}
-                  {project.isForked && (
-                    <div className="absolute top-3 right-3 px-2 py-0.5 rounded-md bg-amber-950/80 border border-amber-500/40 text-amber-300 font-mono-tech text-[10px] flex items-center gap-1 backdrop-blur-sm">
-                      <GitFork className="w-3 h-3 text-amber-400" />
-                      <span>CUSTOM FORK MODULE</span>
-                    </div>
-                  )}
+                  {/* Top Overlay Badge Bar - Flex container with wrap prevents collisions */}
+                  <div className="absolute top-3 left-3 right-3 flex items-center justify-between gap-2 pointer-events-none z-10">
+                    {project.hasVerifiedScreenshot && project.image ? (
+                      <div className="px-2.5 py-1 rounded-md bg-emerald-950/90 border border-emerald-500/40 text-emerald-300 font-mono-tech text-[10px] flex items-center gap-1.5 backdrop-blur-md shadow-sm">
+                        <ImageIcon className="w-3 h-3 text-emerald-400" />
+                        <span>VERIFIED HARDWARE PHOTO</span>
+                      </div>
+                    ) : (
+                      <div className="px-2.5 py-1 rounded-md bg-cyan-950/90 border border-cyan-500/40 text-cyan-300 font-mono-tech text-[10px] flex items-center gap-1.5 backdrop-blur-md shadow-sm">
+                        <Layers className="w-3 h-3 text-cyan-400" />
+                        <span>SCHEMATIC BLUEPRINT</span>
+                      </div>
+                    )}
+
+                    {project.isForked && (
+                      <div className="px-2 py-0.5 rounded-md bg-amber-950/90 border border-amber-500/40 text-amber-300 font-mono-tech text-[10px] flex items-center gap-1 backdrop-blur-md shrink-0 shadow-sm">
+                        <GitFork className="w-3 h-3 text-amber-400" />
+                        <span>CUSTOM FORK</span>
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 {/* Card Content Body */}
                 <div className="p-6 flex-1 flex flex-col justify-between">
                   <div>
-                    {/* Category Label */}
+                    {/* Category Label & Hardware Flag */}
                     <div className="flex items-center justify-between gap-2 mb-2">
                       <span className="font-mono-tech text-xs text-cyan-400 uppercase tracking-wider">
                         {project.categoryLabel}
                       </span>
                       {project.isPrimaryEmbedded && (
-                        <span className="text-[10px] font-mono-tech px-2 py-0.5 rounded bg-blue-950/60 border border-blue-500/30 text-blue-300">
-                          CORE HARDWARE
+                        <span className="text-[10px] font-mono-tech px-2 py-0.5 rounded bg-cyan-950/60 border border-cyan-500/40 text-cyan-300 font-semibold flex items-center gap-1">
+                          <Cpu className="w-3 h-3" />
+                          <span>PRIMARY EMBEDDED</span>
                         </span>
                       )}
                     </div>
 
-                    {/* Title */}
-                    <h3 className="text-xl font-bold text-white group-hover:text-cyan-300 transition-colors line-clamp-1">
+                    {/* Full Title (2 Lines allowed without cutoff) */}
+                    <h3 className="text-xl font-bold text-white group-hover:text-cyan-300 transition-colors line-clamp-2 min-h-[3.5rem] leading-snug">
                       {project.title}
                     </h3>
-                    <p className="text-xs text-slate-400 font-mono-tech mt-0.5 mb-3 line-clamp-1">
+                    <p className="text-xs text-slate-400 font-mono-tech mt-1 mb-3 line-clamp-1">
                       {project.subtitle}
                     </p>
 
@@ -155,11 +166,11 @@ export const ProjectsSection: React.FC = () => {
 
                     {/* Verified Implementation Summary */}
                     <div className="p-3 rounded-xl bg-[#060b16] border border-slate-800/80 mb-4">
-                      <div className="text-[10px] font-mono-tech text-cyan-400 uppercase mb-1 flex items-center gap-1">
+                      <div className="text-[10px] font-mono-tech text-cyan-400 uppercase mb-1 flex items-center gap-1 font-semibold">
                         <CheckCircle className="w-3 h-3 text-cyan-400" />
                         <span>Verified Implementation</span>
                       </div>
-                      <p className="text-xs text-slate-400 line-clamp-2">
+                      <p className="text-xs text-slate-300 line-clamp-2">
                         {project.implementationSummary}
                       </p>
                     </div>
@@ -167,10 +178,10 @@ export const ProjectsSection: React.FC = () => {
                     {/* Technology Badges */}
                     <div className="flex flex-wrap gap-1.5 mb-5">
                       {project.technologies.slice(0, 4).map((tech, idx) => (
-                        <TechBadge key={idx} label={tech} size="sm" variant="slate" />
+                        <TechBadge key={idx} label={tech} size="sm" variant={project.isPrimaryEmbedded ? 'cyan' : 'slate'} />
                       ))}
                       {project.technologies.length > 4 && (
-                        <span className="text-[10px] px-2 py-0.5 rounded bg-slate-900 text-slate-500 font-mono-tech self-center">
+                        <span className="text-[10px] px-2 py-0.5 rounded bg-slate-900 text-slate-400 font-mono-tech self-center">
                           +{project.technologies.length - 4} more
                         </span>
                       )}
@@ -181,7 +192,7 @@ export const ProjectsSection: React.FC = () => {
                   <div className="pt-4 border-t border-slate-800/80 flex items-center justify-between gap-3">
                     <button
                       onClick={() => setSelectedProject(project)}
-                      className="inline-flex items-center gap-1.5 text-xs font-mono-tech text-cyan-400 hover:text-cyan-300 transition-colors py-1.5 font-medium"
+                      className="inline-flex items-center gap-1.5 text-xs font-mono-tech text-cyan-400 hover:text-cyan-300 transition-colors py-1.5 font-bold tracking-wider"
                     >
                       <span>INSPECT_ARCHITECTURE</span>
                       <ArrowUpRight className="w-3.5 h-3.5" />
