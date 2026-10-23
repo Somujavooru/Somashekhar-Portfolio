@@ -41,3 +41,5 @@ scratch/
 Resume_backup/
 temp-vite/
 extract.cjs
+capture_review.cjs
+screenshots_review/
