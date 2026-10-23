@@ -42,4 +42,8 @@ Resume_backup/
 temp-vite/
 extract.cjs
 capture_review.cjs
+capture_elements.cjs
+test_interactions.cjs
+verify_production_build.cjs
 screenshots_review/
+

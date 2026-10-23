@@ -17,73 +17,95 @@ export const SiliconProcessorCore: React.FC<ProcessorCoreProps> = ({
   const ring1Ref = useRef<THREE.Group>(null);
   const ring2Ref = useRef<THREE.Group>(null);
   const ring3Ref = useRef<THREE.Group>(null);
-  const particlesRef = useRef<THREE.Points>(null);
-  const coreDieRef = useRef<THREE.Mesh>(null);
+  const coreDieRef = useRef<THREE.Group>(null);
   const pointerLightRef = useRef<THREE.PointLight>(null);
+  const pulseLinesRef = useRef<THREE.Group>(null);
 
-  // Generate floating micro-components (MEMS, capacitors, quartz resonators)
+  // Generate 36 physical metallic QFP pins (9 per side) with dual-tone tin-gold tips
+  const pinData = useMemo(() => {
+    const pins: {
+      position: [number, number, number];
+      rotation: [number, number, number];
+      tipPos: [number, number, number];
+    }[] = [];
+    const pinsPerSide = 9;
+    const halfWidth = 1.45;
+    const spacing = (halfWidth * 2) / (pinsPerSide + 1);
+
+    for (let i = 1; i <= pinsPerSide; i++) {
+      const offset = -halfWidth + i * spacing;
+      // Top pins
+      pins.push({
+        position: [offset, halfWidth + 0.16, 0.02],
+        rotation: [0, 0, 0],
+        tipPos: [offset, halfWidth + 0.32, 0.02],
+      });
+      // Bottom pins
+      pins.push({
+        position: [offset, -halfWidth - 0.16, 0.02],
+        rotation: [0, 0, 0],
+        tipPos: [offset, -halfWidth - 0.32, 0.02],
+      });
+      // Left pins
+      pins.push({
+        position: [-halfWidth - 0.16, offset, 0.02],
+        rotation: [0, 0, Math.PI / 2],
+        tipPos: [-halfWidth - 0.32, offset, 0.02],
+      });
+      // Right pins
+      pins.push({
+        position: [halfWidth + 0.16, offset, 0.02],
+        rotation: [0, 0, Math.PI / 2],
+        tipPos: [halfWidth + 0.32, offset, 0.02],
+      });
+    }
+    return pins;
+  }, []);
+
+  // Circuit trace lines radiating across the PCB substrate
+  const pcbTraces = useMemo(() => {
+    const traces: [number, number, number][][] = [];
+    const count = 12;
+    for (let i = 0; i < count; i++) {
+      const angle = (i / count) * Math.PI * 2;
+      const r1 = 1.6;
+      const r2 = 2.4;
+      const x1 = Math.cos(angle) * r1;
+      const y1 = Math.sin(angle) * r1;
+      const x2 = Math.cos(angle + 0.15) * r2;
+      const y2 = Math.sin(angle + 0.15) * r2;
+      traces.push([
+        [x1, y1, 0.08],
+        [x2, y2, 0.08],
+      ]);
+    }
+    return traces;
+  }, []);
+
+  // Floating micro-components (capacitors, crystalline oscillators)
   const microComponents = useMemo(() => {
-    const count = isMobile ? 10 : 22;
+    const count = isMobile ? 8 : 16;
     const comps = [];
     for (let i = 0; i < count; i++) {
-      const angle = (i / count) * Math.PI * 2 + Math.random() * 0.3;
-      const radius = 2.5 + Math.random() * 1.6;
+      const angle = (i / count) * Math.PI * 2 + Math.random() * 0.2;
+      const radius = 2.6 + Math.random() * 1.4;
       const x = Math.cos(angle) * radius;
-      const y = (Math.random() - 0.5) * 1.6;
+      const y = (Math.random() - 0.5) * 1.4;
       const z = Math.sin(angle) * radius;
       comps.push({
         position: [x, y, z] as [number, number, number],
         rotation: [Math.random() * Math.PI, Math.random() * Math.PI, 0] as [number, number, number],
-        scale: [0.14 + Math.random() * 0.16, 0.05 + Math.random() * 0.06, 0.14 + Math.random() * 0.16] as [number, number, number],
-        color: i % 3 === 0 ? '#00f0ff' : i % 3 === 1 ? '#38bdf8' : '#818cf8',
+        scale: [0.12 + Math.random() * 0.14, 0.04 + Math.random() * 0.05, 0.12 + Math.random() * 0.14] as [number, number, number],
+        color: i % 3 === 0 ? '#00f0ff' : i % 3 === 1 ? '#38bdf8' : '#a5b4fc',
       });
     }
     return comps;
   }, [isMobile]);
 
-  // Ambient electron dust & telemetry carrier particles
-  const particleData = useMemo(() => {
-    const particleCount = isMobile ? 50 : 130;
-    const positions = new Float32Array(particleCount * 3);
-
-    for (let i = 0; i < particleCount; i++) {
-      const radius = 1.4 + Math.random() * 3.6;
-      const theta = Math.random() * Math.PI * 2;
-      const phi = Math.acos(2 * Math.random() - 1);
-
-      positions[i * 3] = radius * Math.sin(phi) * Math.cos(theta);
-      positions[i * 3 + 1] = (radius * Math.sin(phi) * Math.sin(theta)) * 0.65;
-      positions[i * 3 + 2] = radius * Math.cos(phi);
-    }
-
-    return { positions };
-  }, [isMobile]);
-
-  // QFP package leadframe pins (8 pins per side = 32 total metallic contacts)
-  const pinData = useMemo(() => {
-    const pins: { position: [number, number, number]; rotation: [number, number, number] }[] = [];
-    const pinsPerSide = 8;
-    const halfWidth = 1.32;
-    const pinSpacing = (halfWidth * 2) / (pinsPerSide + 1);
-
-    for (let i = 1; i <= pinsPerSide; i++) {
-      const offset = -halfWidth + i * pinSpacing;
-      // Top pins
-      pins.push({ position: [offset, halfWidth + 0.16, 0.02], rotation: [0, 0, 0] });
-      // Bottom pins
-      pins.push({ position: [offset, -halfWidth - 0.16, 0.02], rotation: [0, 0, 0] });
-      // Left pins
-      pins.push({ position: [-halfWidth - 0.16, offset, 0.02], rotation: [0, 0, Math.PI / 2] });
-      // Right pins
-      pins.push({ position: [halfWidth + 0.16, offset, 0.02], rotation: [0, 0, Math.PI / 2] });
-    }
-    return pins;
-  }, []);
-
-  // Concentric radar & bus clock ring geometries
-  const ringGeo1 = useMemo(() => new THREE.RingGeometry(2.1, 2.13, 64), []);
-  const ringGeo2 = useMemo(() => new THREE.RingGeometry(2.5, 2.52, 64), []);
-  const ringGeo3 = useMemo(() => new THREE.RingGeometry(2.9, 2.92, 64), []);
+  // Concentric radar & clock rings
+  const ringGeo1 = useMemo(() => new THREE.RingGeometry(2.15, 2.18, 64), []);
+  const ringGeo2 = useMemo(() => new THREE.RingGeometry(2.55, 2.57, 64), []);
+  const ringGeo3 = useMemo(() => new THREE.RingGeometry(2.95, 2.97, 64), []);
 
   useFrame((state) => {
     if (reducedMotion) return;
@@ -92,153 +114,279 @@ export const SiliconProcessorCore: React.FC<ProcessorCoreProps> = ({
 
     // Smooth pointer parallax tilt on the entire core assembly
     if (groupRef.current) {
-      const targetRotationY = pointerPosition.current.x * 0.45 + time * 0.06;
-      const targetRotationX = -pointerPosition.current.y * 0.35 + 0.32; // tilted isometric perspective
+      // Default isometric tilted angle: x=0.42, y=-0.32
+      const targetRotationY = -0.28 + (pointerPosition.current.x * 0.4) + Math.sin(time * 0.25) * 0.08;
+      const targetRotationX = 0.38 - (pointerPosition.current.y * 0.3) + Math.cos(time * 0.25) * 0.05;
       
-      groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, targetRotationY, 0.05);
-      groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, targetRotationX, 0.05);
+      groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, targetRotationY, 0.06);
+      groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, targetRotationX, 0.06);
       
-      // Floating harmonic oscillation
-      groupRef.current.position.y = Math.sin(time * 0.9) * 0.08;
+      // Gentle harmonic float
+      groupRef.current.position.y = Math.sin(time * 0.8) * 0.07;
     }
 
-    // Dynamic light tracking pointer
+    // Dynamic light tracking pointer for metallic glints
     if (pointerLightRef.current) {
-      pointerLightRef.current.position.x = pointerPosition.current.x * 3.5;
-      pointerLightRef.current.position.y = pointerPosition.current.y * 3.5 + 0.5;
+      pointerLightRef.current.position.x = pointerPosition.current.x * 4;
+      pointerLightRef.current.position.y = pointerPosition.current.y * 4 + 1.2;
     }
 
     // Concentric bus clock rings counter-rotation
-    if (ring1Ref.current) ring1Ref.current.rotation.z = time * 0.16;
-    if (ring2Ref.current) ring2Ref.current.rotation.z = -time * 0.12;
-    if (ring3Ref.current) ring3Ref.current.rotation.z = time * 0.08;
+    if (ring1Ref.current) ring1Ref.current.rotation.z = time * 0.14;
+    if (ring2Ref.current) ring2Ref.current.rotation.z = -time * 0.1;
+    if (ring3Ref.current) ring3Ref.current.rotation.z = time * 0.07;
 
-    // Processor Core Die pulse
+    // Silicon Core Die pulse
     if (coreDieRef.current) {
-      const pulse = 1.0 + Math.sin(time * 2.5) * 0.035;
+      const pulse = 1.0 + Math.sin(time * 2.4) * 0.025;
       coreDieRef.current.scale.set(pulse, pulse, pulse);
-    }
-
-    // Particle field rotation
-    if (particlesRef.current) {
-      particlesRef.current.rotation.y = time * 0.035;
     }
   });
 
   return (
     <group ref={groupRef} position={[0, 0, 0]}>
-      {/* 1. Base FR4 PCB Substrate (Matte dark obsidian with beveled depth) */}
-      <mesh position={[0, 0, -0.08]}>
-        <boxGeometry args={[2.7, 2.7, 0.14]} />
+      {/* ========================================================
+          1. PCB SUBSTRATE LAYER (Rich Deep Teal / FR4 Surface)
+          Distinct contrast against midnight-black background
+         ======================================================== */}
+      <mesh position={[0, 0, -0.06]}>
+        <boxGeometry args={[3.0, 3.0, 0.14]} />
         <meshStandardMaterial
-          color="#060c18"
-          roughness={0.45}
-          metalness={0.85}
+          color="#12233c"
+          roughness={0.35}
+          metalness={0.4}
         />
       </mesh>
 
-      {/* PCB Corner Gold Mount Rings & Fiducial Vias */}
-      {[-1.18, 1.18].map((x) =>
-        [-1.18, 1.18].map((y) => (
-          <mesh key={`${x}-${y}`} position={[x, y, 0.01]}>
-            <cylinderGeometry args={[0.08, 0.08, 0.03, 16]} />
-            <meshStandardMaterial
-              color="#38bdf8"
-              emissive="#00f0ff"
-              emissiveIntensity={0.8}
-              metalness={0.9}
-            />
-          </mesh>
-        ))
-      )}
-
-      {/* 2. Metallic QFP Leadframe Contact Pins (32 metallic pins) */}
-      {pinData.map((pin, i) => (
-        <mesh key={`pin-${i}`} position={pin.position} rotation={pin.rotation}>
-          <boxGeometry args={[0.09, 0.28, 0.04]} />
-          <meshStandardMaterial
-            color="#38bdf8"
-            emissive="#0284c7"
-            emissiveIntensity={0.4}
-            metalness={0.95}
-            roughness={0.15}
-          />
-        </mesh>
-      ))}
-
-      {/* 3. Integrated Heat Spreader (IHS) Metallic Nickel-Copper Cap */}
-      <mesh position={[0, 0, 0.09]}>
-        <boxGeometry args={[1.85, 1.85, 0.2]} />
-        <meshStandardMaterial
-          color="#0c1932"
-          metalness={0.92}
-          roughness={0.22}
-        />
-      </mesh>
-
-      {/* Heat Spreader Beveled Trim Wireframe Glow */}
-      <lineSegments position={[0, 0, 0.2]}>
-        <edgesGeometry args={[new THREE.BoxGeometry(1.85, 1.85, 0.01)]} />
-        <lineBasicMaterial color="#38bdf8" linewidth={1.5} />
+      {/* PCB Substrate Outer Chamfered Trim */}
+      <lineSegments position={[0, 0, 0.02]}>
+        <edgesGeometry args={[new THREE.BoxGeometry(3.0, 3.0, 0.14)]} />
+        <lineBasicMaterial color="#38bdf8" opacity={0.6} transparent linewidth={1.5} />
       </lineSegments>
 
-      {/* 4. Exposed Central Silicon Die Unit (High-Gloss Blue Emissive Logic Matrix) */}
-      <mesh ref={coreDieRef} position={[0, 0, 0.23]}>
-        <boxGeometry args={[1.15, 1.15, 0.09]} />
-        <meshStandardMaterial
-          color="#0284c7"
-          emissive="#00f0ff"
-          emissiveIntensity={0.95}
-          metalness={0.9}
-          roughness={0.1}
-        />
-      </mesh>
-
-      {/* Silicon Die Internal Bus Grid */}
-      <lineSegments position={[0, 0, 0.28]}>
-        <edgesGeometry args={[new THREE.BoxGeometry(1.15, 1.15, 0.01)]} />
-        <lineBasicMaterial color="#ffffff" linewidth={2} />
-      </lineSegments>
-
-      {/* Core ALU & SRAM Compute Modules (4 sub-blocks) */}
-      {[-0.29, 0.29].map((x) =>
-        [-0.29, 0.29].map((y) => (
-          <group key={`alu-group-${x}-${y}`} position={[x, y, 0.29]}>
+      {/* 4 Golden Mounting Pads & Ground Vias in Corners */}
+      {[-1.32, 1.32].map((x) =>
+        [-1.32, 1.32].map((y) => (
+          <group key={`corner-pad-${x}-${y}`} position={[x, y, 0.02]}>
             <mesh>
-              <boxGeometry args={[0.42, 0.42, 0.02]} />
+              <cylinderGeometry args={[0.09, 0.09, 0.04, 16]} />
               <meshStandardMaterial
-                color="#082f49"
-                emissive="#38bdf8"
-                emissiveIntensity={0.65}
-                metalness={0.8}
+                color="#f59e0b"
+                emissive="#d97706"
+                emissiveIntensity={0.6}
+                metalness={0.9}
+                roughness={0.2}
               />
             </mesh>
-            <mesh position={[0, 0, 0.015]}>
-              <boxGeometry args={[0.24, 0.24, 0.01]} />
-              <meshStandardMaterial
-                color="#00f0ff"
-                emissive="#00f0ff"
-                emissiveIntensity={1.2}
-              />
+            <mesh position={[0, 0, 0.025]}>
+              <cylinderGeometry args={[0.05, 0.05, 0.02, 16]} />
+              <meshBasicMaterial color="#00f0ff" />
             </mesh>
           </group>
         ))
       )}
 
-      {/* 5. Concentric Holographic Bus / Radar Rings */}
-      <group ref={ring1Ref} position={[0, 0, 0.05]}>
-        <primitive object={new THREE.Mesh(ringGeo1, new THREE.MeshBasicMaterial({ color: '#38bdf8', side: THREE.DoubleSide, transparent: true, opacity: 0.55 }))} />
+      {/* Etched PCB Circuit Traces Radiating From Package */}
+      <group ref={pulseLinesRef}>
+        {pcbTraces.map((pts, idx) => (
+          <line key={`trace-${idx}`}>
+            <bufferGeometry>
+              <bufferAttribute
+                attach="attributes-position"
+                args={[new Float32Array(pts.flat()), 3]}
+              />
+            </bufferGeometry>
+            <lineBasicMaterial color="#00f0ff" opacity={0.5} transparent linewidth={1.5} />
+          </line>
+        ))}
       </group>
 
-      <group ref={ring2Ref} position={[0, 0, 0.02]} rotation={[0.22, 0, 0]}>
-        <primitive object={new THREE.Mesh(ringGeo2, new THREE.MeshBasicMaterial({ color: '#00f0ff', side: THREE.DoubleSide, transparent: true, opacity: 0.38 }))} />
+      {/* ========================================================
+          2. METALLIC QFP LEADFRAME PINS (36 Visible Pins)
+          Bright tin-silver leads with golden solder pads
+         ======================================================== */}
+      {pinData.map((pin, i) => (
+        <group key={`pin-assembly-${i}`}>
+          {/* Main Tin-Silver Lead Body */}
+          <mesh position={pin.position} rotation={pin.rotation}>
+            <boxGeometry args={[0.08, 0.3, 0.04]} />
+            <meshStandardMaterial
+              color="#cbd5e1"
+              emissive="#38bdf8"
+              emissiveIntensity={0.25}
+              metalness={0.88}
+              roughness={0.15}
+            />
+          </mesh>
+          {/* Golden Solder Foot Pad */}
+          <mesh position={pin.tipPos} rotation={pin.rotation}>
+            <boxGeometry args={[0.07, 0.1, 0.03]} />
+            <meshStandardMaterial
+              color="#fbbf24"
+              emissive="#f59e0b"
+              emissiveIntensity={0.5}
+              metalness={0.92}
+              roughness={0.18}
+            />
+          </mesh>
+        </group>
+      ))}
+
+      {/* ========================================================
+          3. INTEGRATED HEAT SPREADER (IHS) - METALLIC TITANIUM/NICKEL
+          Visible metallic luster, beveled edges, high specular response
+         ======================================================== */}
+      {/* Lower IHS Flange */}
+      <mesh position={[0, 0, 0.08]}>
+        <boxGeometry args={[2.2, 2.2, 0.12]} />
+        <meshStandardMaterial
+          color="#1e2e47"
+          roughness={0.3}
+          metalness={0.75}
+        />
+      </mesh>
+
+      {/* Upper IHS Cap (Brushed Titanium finish with distinct chamfer) */}
+      <mesh position={[0, 0, 0.18]}>
+        <boxGeometry args={[1.9, 1.9, 0.14]} />
+        <meshStandardMaterial
+          color="#293d5d"
+          roughness={0.28}
+          metalness={0.78}
+        />
+      </mesh>
+
+      {/* Heat Spreader Outer Glow Contour */}
+      <lineSegments position={[0, 0, 0.26]}>
+        <edgesGeometry args={[new THREE.BoxGeometry(1.9, 1.9, 0.01)]} />
+        <lineBasicMaterial color="#38bdf8" linewidth={2} />
+      </lineSegments>
+
+      {/* Silicon Alignment Notch in Top-Left Corner */}
+      <mesh position={[-0.8, 0.8, 0.26]}>
+        <cylinderGeometry args={[0.06, 0.06, 0.02, 16]} />
+        <meshStandardMaterial color="#f43f5e" emissive="#fb7185" emissiveIntensity={0.8} />
+      </mesh>
+
+      {/* ========================================================
+          4. CENTRAL SILICON DIE (Logic Core Centerpiece)
+          Brilliant reflective silicon, glowing cyan compute matrix
+         ======================================================== */}
+      <group ref={coreDieRef} position={[0, 0, 0.28]}>
+        {/* Silicon Die Mirror Substrate */}
+        <mesh position={[0, 0, 0]}>
+          <boxGeometry args={[1.25, 1.25, 0.08]} />
+          <meshStandardMaterial
+            color="#0369a1"
+            emissive="#0284c7"
+            emissiveIntensity={0.7}
+            roughness={0.12}
+            metalness={0.92}
+          />
+        </mesh>
+
+        {/* Die Edge Border Neon Accent */}
+        <lineSegments position={[0, 0, 0.045]}>
+          <edgesGeometry args={[new THREE.BoxGeometry(1.25, 1.25, 0.01)]} />
+          <lineBasicMaterial color="#00f0ff" linewidth={2} />
+        </lineSegments>
+
+        {/* 4 Multi-Core Processing Modules (Xtensa Dual-Core + SRAM Cache + DMA) */}
+        {[-0.32, 0.32].map((x, cX) =>
+          [-0.32, 0.32].map((y, cY) => (
+            <group key={`core-block-${x}-${y}`} position={[x, y, 0.045]}>
+              {/* Outer Core Block */}
+              <mesh>
+                <boxGeometry args={[0.44, 0.44, 0.03]} />
+                <meshStandardMaterial
+                  color="#082f49"
+                  emissive="#0284c7"
+                  emissiveIntensity={0.6}
+                  metalness={0.85}
+                  roughness={0.2}
+                />
+              </mesh>
+              {/* Inner Glowing Micro-ALU Array */}
+              <mesh position={[0, 0, 0.02]}>
+                <boxGeometry args={[0.26, 0.26, 0.015]} />
+                <meshStandardMaterial
+                  color="#00f0ff"
+                  emissive="#00f0ff"
+                  emissiveIntensity={1.4}
+                />
+              </mesh>
+              {/* Core Active Telemetry LED */}
+              <mesh position={[0.13, 0.13, 0.03]}>
+                <sphereGeometry args={[0.025, 8, 8]} />
+                <meshBasicMaterial color={cX === 0 && cY === 0 ? '#34d399' : '#00f0ff'} />
+              </mesh>
+            </group>
+          ))
+        )}
+
+        {/* Center Bus Crosshair Interconnect */}
+        <mesh position={[0, 0, 0.05]}>
+          <boxGeometry args={[0.8, 0.03, 0.01]} />
+          <meshBasicMaterial color="#ffffff" />
+        </mesh>
+        <mesh position={[0, 0, 0.05]}>
+          <boxGeometry args={[0.03, 0.8, 0.01]} />
+          <meshBasicMaterial color="#ffffff" />
+        </mesh>
       </group>
 
-      <group ref={ring3Ref} position={[0, 0, -0.02]} rotation={[-0.18, 0.12, 0]}>
-        <primitive object={new THREE.Mesh(ringGeo3, new THREE.MeshBasicMaterial({ color: '#818cf8', side: THREE.DoubleSide, transparent: true, opacity: 0.28 }))} />
+      {/* ========================================================
+          5. HOLOGRAPHIC BUS & RADAR DATA RINGS
+         ======================================================== */}
+      <group ref={ring1Ref} position={[0, 0, 0.08]}>
+        <primitive
+          object={
+            new THREE.Mesh(
+              ringGeo1,
+              new THREE.MeshBasicMaterial({
+                color: '#38bdf8',
+                side: THREE.DoubleSide,
+                transparent: true,
+                opacity: 0.65,
+              })
+            )
+          }
+        />
       </group>
 
-      {/* 6. Floating Peripheral Micro-Components */}
+      <group ref={ring2Ref} position={[0, 0, 0.04]} rotation={[0.2, 0, 0]}>
+        <primitive
+          object={
+            new THREE.Mesh(
+              ringGeo2,
+              new THREE.MeshBasicMaterial({
+                color: '#00f0ff',
+                side: THREE.DoubleSide,
+                transparent: true,
+                opacity: 0.45,
+              })
+            )
+          }
+        />
+      </group>
+
+      <group ref={ring3Ref} position={[0, 0, -0.02]} rotation={[-0.16, 0.1, 0]}>
+        <primitive
+          object={
+            new THREE.Mesh(
+              ringGeo3,
+              new THREE.MeshBasicMaterial({
+                color: '#818cf8',
+                side: THREE.DoubleSide,
+                transparent: true,
+                opacity: 0.35,
+              })
+            )
+          }
+        />
+      </group>
+
+      {/* Floating Micro-Components */}
       {microComponents.map((comp, idx) => (
         <mesh
           key={idx}
@@ -250,37 +398,59 @@ export const SiliconProcessorCore: React.FC<ProcessorCoreProps> = ({
           <meshStandardMaterial
             color={comp.color}
             emissive={comp.color}
-            emissiveIntensity={0.7}
-            metalness={0.92}
-            roughness={0.18}
+            emissiveIntensity={0.8}
+            metalness={0.9}
+            roughness={0.15}
           />
         </mesh>
       ))}
 
-      {/* 7. Ambient Electron & Silicon Carrier Particles */}
-      <points ref={particlesRef}>
-        <bufferGeometry>
-          <bufferAttribute
-            attach="attributes-position"
-            args={[particleData.positions, 3]}
-          />
-        </bufferGeometry>
-        <pointsMaterial
-          size={0.038}
-          color="#38bdf8"
-          transparent
-          opacity={0.7}
-          blending={THREE.AdditiveBlending}
-        />
-      </points>
+      {/* ========================================================
+          6. MULTI-ANGLE BALANCED STUDIO LIGHTING
+          Prevents black shadows and ensures bright, visible layers
+         ======================================================== */}
+      {/* Dynamic Cursor Light (Tracks Pointer Coordinates) */}
+      <pointLight
+        ref={pointerLightRef}
+        position={[0, 0, 2.5]}
+        color="#00f0ff"
+        intensity={3.5}
+        distance={8}
+        decay={2}
+      />
 
-      {/* 8. Dynamic Specular Lighting System */}
-      {/* Pointer-following specular glint */}
-      <pointLight ref={pointerLightRef} position={[0, 0, 2.4]} color="#00f0ff" intensity={3.8} distance={7} decay={2} />
-      {/* Stationary blue key lights */}
-      <pointLight position={[-3, 2.5, 1.5]} color="#38bdf8" intensity={2.4} distance={8} decay={2} />
-      <pointLight position={[3, -2.5, -1]} color="#818cf8" intensity={2.0} distance={8} decay={2} />
-      <ambientLight intensity={0.5} color="#0d1b30" />
+      {/* White Key Light from Top-Front */}
+      <directionalLight
+        position={[-3.5, 4.5, 4.0]}
+        color="#ffffff"
+        intensity={2.8}
+      />
+
+      {/* Cyan Fill Light from Bottom-Right */}
+      <directionalLight
+        position={[3.5, -3.0, 3.0]}
+        color="#38bdf8"
+        intensity={2.2}
+      />
+
+      {/* Violet Rim Backlight */}
+      <directionalLight
+        position={[0, 3.5, -3.5]}
+        color="#818cf8"
+        intensity={2.0}
+      />
+
+      {/* Central Point Glow on the Die */}
+      <pointLight
+        position={[0, 0, 1.2]}
+        color="#00f0ff"
+        intensity={2.5}
+        distance={4.5}
+        decay={1.8}
+      />
+
+      {/* Generous Ambient Base Light (Ensures materials are always visible) */}
+      <ambientLight color="#1e2d48" intensity={1.5} />
     </group>
   );
 };
