@@ -1,197 +1,386 @@
 import React from 'react';
-import { ArrowRight, Download, Mail, ChevronDown } from 'lucide-react';
+import { motion, type Variants, useScroll, useTransform } from 'framer-motion';
+import { ArrowRight, Download, Mail, Cpu, MapPin } from 'lucide-react';
 import { GithubIcon, LinkedinIcon } from '../components/common/SocialIcons';
 import { PROFILE_CONFIG } from '../data/profile';
-import { ThreeSceneContainer } from '../components/3d/ThreeSceneContainer';
+import { HeroProfileCenterpiece } from '../components/hero/HeroProfileCenterpiece';
 
 interface HeroSectionProps {
   onOpenResumeModal: (type: 'embedded' | 'software') => void;
 }
 
+const TEAL = '#126B5B';
+const GOLD = '#C99543';
+const CHARCOAL = '#15252B';
+const MUTED = '#68757A';
+const BORDER = '#E5E9E6';
+
+const EASE_OUT = [0.22, 1, 0.36, 1] as const;
+
+const container: Variants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.08, delayChildren: 0.05 } },
+};
+
+const item: Variants = {
+  hidden: { opacity: 0, y: 16 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.55, ease: EASE_OUT },
+  },
+};
+
 export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResumeModal }) => {
+  const { scrollY } = useScroll();
+
+  // At scroll = 0, these values are 0, 0, 1, 1 (exact initial state)
+  const leftColY = useTransform(scrollY, [0, 600], [0, -35]);
+  const rightColY = useTransform(scrollY, [0, 600], [0, -55]);
+  const heroOpacity = useTransform(scrollY, [0, 450, 750], [1, 0.7, 0.2]);
+  const heroScale = useTransform(scrollY, [0, 600], [1, 0.94]);
+
   const scrollTo = (id: string) => {
     const elem = document.getElementById(id);
     if (elem) {
-      const topOffset = 80;
-      const elementPosition = elem.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - topOffset;
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth',
-      });
+      if ((window as any).lenis) {
+        (window as any).lenis.scrollTo(elem, { offset: -70, duration: 1.2 });
+      } else {
+        const topOffset = 80;
+        const elementPosition = elem.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - topOffset;
+        window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+      }
     }
   };
 
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex items-center pt-24 pb-16 overflow-hidden bg-tech-grid"
+      className="relative w-full h-full min-h-screen flex items-center pt-16 sm:pt-20 lg:pt-20 xl:pt-22 pb-6 lg:pb-8 overflow-hidden bg-[#FAFAF7]"
     >
-      {/* Background radial lighting */}
-      <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-[140px] pointer-events-none" />
-      <div className="absolute top-1/3 right-1/4 w-[450px] h-[450px] bg-indigo-500/10 rounded-full blur-[150px] pointer-events-none" />
+      {/* Precision Laboratory Architectural Vertical Guidelines */}
+      <div
+        className="absolute inset-0 pointer-events-none opacity-40 z-0"
+        style={{
+          backgroundImage:
+            'repeating-linear-gradient(to right, rgba(21, 37, 43, 0.035) 0px, rgba(21, 37, 43, 0.035) 1px, transparent 1px, transparent 136px)',
+        }}
+      />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center min-h-[calc(100vh-160px)]">
-          {/* Left Column: Technical Positioning & Content */}
-          <div className="lg:col-span-7 space-y-6 sm:space-y-7 text-left">
-            {/* Engineering Status Chip */}
-            <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-cyan-950/60 border border-cyan-500/30 text-cyan-300 font-mono-tech text-xs tracking-wide shadow-sm shadow-cyan-500/10">
-              <span className="flex h-2 w-2 relative">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
+      {/* Subtle Atmospheric Light Radial Glows */}
+      <div
+        className="absolute top-1/4 -left-20 w-[550px] h-[550px] rounded-full pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle, rgba(18,107,91,0.035) 0%, transparent 70%)',
+          filter: 'blur(50px)',
+        }}
+      />
+      <div
+        className="absolute top-1/3 -right-20 w-[500px] h-[500px] rounded-full pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle, rgba(201,149,67,0.035) 0%, transparent 70%)',
+          filter: 'blur(50px)',
+        }}
+      />
+
+      {/* Precision Grid Crosshairs and Accent Dots */}
+      <div className="hidden lg:block absolute left-9 top-[48%] w-1.5 h-1.5 rounded-full bg-[#C99543]/70 pointer-events-none z-0" />
+      <div className="hidden lg:block absolute left-9 top-[54%] w-1.5 h-1.5 rounded-full bg-[#C99543]/70 pointer-events-none z-0" />
+      
+      {/* Center-Bottom Precision Crosshair */}
+      <div className="hidden lg:flex items-center justify-center absolute left-[60.5%] bottom-7 pointer-events-none z-0 text-[#126B5B]/50">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <line x1="7" y1="0" x2="7" y2="14" stroke="currentColor" strokeWidth="1" strokeDasharray="2 2" />
+          <line x1="0" y1="7" x2="14" y2="7" stroke="currentColor" strokeWidth="1" strokeDasharray="2 2" />
+          <circle cx="7" cy="7" r="1.5" fill="currentColor" />
+        </svg>
+      </div>
+
+      {/* Bottom-Left Precision Crosshair */}
+      <div className="hidden lg:flex items-center justify-center absolute left-14 bottom-6 pointer-events-none z-0 text-[#126B5B]/50">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <line x1="6" y1="0" x2="6" y2="12" stroke="currentColor" strokeWidth="1" />
+          <line x1="0" y1="6" x2="12" y2="6" stroke="currentColor" strokeWidth="1" />
+          <circle cx="6" cy="6" r="1.5" fill="currentColor" />
+        </svg>
+      </div>
+
+      {/* Top-Right Precision Dot */}
+      <div className="hidden lg:block absolute right-12 top-[22%] w-1.5 h-1.5 rounded-full bg-[#126B5B]/60 pointer-events-none z-0" />
+
+      {/* Decorative Botanical Foliage Accents (Soft Blur) */}
+      {/* Top-Left Foliage Silhouette */}
+      <div
+        className="hidden md:block absolute -top-14 -left-14 w-60 h-60 pointer-events-none z-0 opacity-45 select-none"
+        style={{ filter: 'blur(4px)' }}
+        aria-hidden="true"
+      >
+        <svg viewBox="0 0 200 200" fill="none" className="w-full h-full">
+          <path
+            d="M20 20 C60 40, 100 90, 90 150 C70 120, 40 80, 20 20 Z"
+            fill="#234E43"
+          />
+          <path
+            d="M30 40 C90 60, 140 120, 130 180 C110 140, 70 90, 30 40 Z"
+            fill="#184238"
+          />
+          <path
+            d="M0 60 C50 70, 90 120, 70 170 C50 140, 20 100, 0 60 Z"
+            fill="#2E5C50"
+          />
+        </svg>
+      </div>
+
+      {/* Bottom-Right Foliage Silhouette */}
+      <div
+        className="hidden md:block absolute -bottom-14 -right-14 w-72 h-72 pointer-events-none z-0 opacity-55 select-none"
+        style={{ filter: 'blur(4px)' }}
+        aria-hidden="true"
+      >
+        <svg viewBox="0 0 240 240" fill="none" className="w-full h-full">
+          <path
+            d="M220 220 C160 190, 110 130, 120 60 C145 95, 185 145, 220 220 Z"
+            fill="#1E473D"
+          />
+          <path
+            d="M200 200 C130 170, 80 100, 95 30 C120 75, 165 130, 200 200 Z"
+            fill="#143A30"
+          />
+          <path
+            d="M240 180 C180 155, 130 95, 150 40 C175 80, 210 125, 240 180 Z"
+            fill="#26574B"
+          />
+        </svg>
+      </div>
+
+      <motion.div
+        style={{ scale: heroScale, opacity: heroOpacity }}
+        className="max-w-[1560px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 w-full relative z-10 my-auto"
+      >
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 xl:gap-12 items-center">
+
+          {/* ── Left Column: Editorial & Information Panels ── */}
+          <motion.div
+            style={{ y: leftColY }}
+            className="lg:col-span-6 xl:col-span-6 space-y-3.5 xl:space-y-4 text-left -translate-y-2 lg:-translate-y-5 xl:-translate-y-6"
+            variants={container}
+            initial="hidden"
+            animate="visible"
+          >
+            {/* Status Badge */}
+            <motion.div
+              variants={item}
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs font-mono-tech tracking-wide bg-white shadow-xs"
+              style={{ borderColor: BORDER, color: CHARCOAL }}
+            >
+              <span className="w-2 h-2 rounded-full" style={{ backgroundColor: TEAL }} />
+              <span className="font-bold text-xs tracking-wider" style={{ color: TEAL }}>
+                ECE GRADUATE 2026
               </span>
-              <span className="font-bold">{PROFILE_CONFIG.primaryRole.toUpperCase()}</span>
-              <span className="text-slate-600">|</span>
-              <span className="text-slate-400">ECE GRADUATE 2026</span>
-            </div>
+              <span className="text-[#8E999E]">|</span>
+              <span className="text-xs font-semibold tracking-wider" style={{ color: MUTED }}>
+                EMBEDDED SOFTWARE ENGINEER
+              </span>
+            </motion.div>
 
-            {/* Engineer Name & Editorial Headline */}
-            <div className="space-y-2.5">
-              <div className="font-mono-tech text-slate-400 text-xs sm:text-sm tracking-wider uppercase">
-                HELLO, I AM <span className="text-white font-bold">{PROFILE_CONFIG.name}</span>
-              </div>
-              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.12]">
-                Engineering Intelligence.{' '}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-sky-300 to-indigo-400">
-                  Connecting Hardware
-                </span>{' '}
-                and Software.
-              </h1>
-            </div>
+            {/* Name Intro */}
+            <motion.div
+              variants={item}
+              className="font-mono-tech text-xs sm:text-[13px] tracking-widest uppercase font-semibold"
+              style={{ color: MUTED }}
+            >
+              HELLO, I AM{' '}
+              <span className="font-bold tracking-wider" style={{ color: CHARCOAL }}>
+                {PROFILE_CONFIG.name}
+              </span>
+            </motion.div>
+
+            {/* Editorial Headline matching exact four-line composition */}
+            <motion.h1
+              variants={item}
+              className="text-3xl sm:text-[2.75rem] lg:text-[3.25rem] xl:text-[3.8rem] font-display font-extrabold tracking-tight leading-[1.05]"
+              style={{ color: CHARCOAL }}
+            >
+              <span>Engineering</span>
+              <span className="block" style={{ color: TEAL }}>
+                Intelligence.
+              </span>
+              <span className="block mt-0.5 sm:mt-1">
+                Connecting Hardware
+              </span>
+              <span className="block">
+                and <span style={{ color: GOLD }}>Software.</span>
+              </span>
+            </motion.h1>
 
             {/* Supporting Statement */}
-            <p className="text-sm sm:text-lg text-slate-300/90 max-w-2xl leading-relaxed">
+            <motion.p
+              variants={item}
+              className="text-sm sm:text-[15px] leading-relaxed max-w-xl font-normal text-[#475569]"
+            >
               {PROFILE_CONFIG.heroStatement}
-            </p>
+            </motion.p>
 
-            {/* Mobile 3D Centerpiece: Visible only on < lg screens */}
-            <div className="block lg:hidden w-full max-w-md mx-auto aspect-[4/3] rounded-2xl border border-cyan-500/25 bg-gradient-to-b from-[#0a1224]/90 to-[#050810]/95 backdrop-blur-md p-2 shadow-2xl shadow-cyan-500/15 overflow-hidden relative my-2">
-              <div className="absolute top-2 left-3 right-3 flex items-center justify-between text-[10px] font-mono-tech text-cyan-400/80 pointer-events-none z-10">
-                <span className="flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
-                  DIE_TEMP :: 38.4°C
-                </span>
-                <span>XTAL :: 40.000 MHz</span>
-              </div>
-              <ThreeSceneContainer className="w-full h-full min-h-[260px]" />
-            </div>
+            {/* Mobile Hero Centerpiece */}
+            <motion.div variants={item} className="block lg:hidden my-4">
+              <HeroProfileCenterpiece />
+            </motion.div>
 
-            {/* Hardware & Systems Telemetry Highlights */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-1 max-w-xl">
-              <div className="p-3 rounded-xl bg-[#0b1324]/90 border border-slate-800 text-xs font-mono-tech shadow-sm">
-                <div className="text-slate-500 text-[10px] uppercase">Microcontrollers</div>
-                <div className="text-cyan-300 font-bold mt-0.5">ESP32 / AVR / FreeRTOS</div>
+            {/* 3 Compact Information Panels */}
+            <motion.div
+              variants={item}
+              className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3 max-w-xl pt-0.5"
+            >
+              {/* Panel 1: Embedded Systems */}
+              <div
+                className="p-2.5 sm:p-3 rounded-2xl bg-white border border-[#E5E9E6] shadow-xs flex items-center gap-2.5 transition-transform hover:-translate-y-0.5"
+              >
+                <div
+                  className="w-9.5 h-9.5 rounded-xl flex items-center justify-center shrink-0"
+                  style={{ backgroundColor: '#FDF6EB', color: GOLD }}
+                >
+                  <Cpu className="w-5 h-5 text-[#C99543]" />
+                </div>
+                <div>
+                  <div className="text-[13px] sm:text-sm font-bold leading-tight" style={{ color: CHARCOAL }}>
+                    Embedded Systems
+                  </div>
+                  <div className="text-[11px] sm:text-xs font-mono-tech mt-0.5 leading-snug" style={{ color: MUTED }}>
+                    ESP32 / STM32 / AVR<br />FreeRTOS
+                  </div>
+                </div>
               </div>
-              <div className="p-3 rounded-xl bg-[#0b1324]/90 border border-slate-800 text-xs font-mono-tech shadow-sm">
-                <div className="text-slate-500 text-[10px] uppercase">Protocols</div>
-                <div className="text-sky-300 font-bold mt-0.5">I2C / SPI / UART / MQTT</div>
-              </div>
-              <div className="p-3 rounded-xl bg-[#0b1324]/90 border border-slate-800 text-xs font-mono-tech col-span-2 sm:col-span-1 shadow-sm">
-                <div className="text-slate-500 text-[10px] uppercase">Academic CGPA</div>
-                <div className="text-indigo-300 font-bold mt-0.5">{PROFILE_CONFIG.education.cgpa}</div>
-              </div>
-            </div>
 
-            {/* Primary Action Buttons */}
-            <div className="pt-2 flex flex-wrap items-center gap-3">
-              <button
+              {/* Panel 2: Protocols */}
+              <div
+                className="p-2.5 sm:p-3 rounded-2xl bg-white border border-[#E5E9E6] shadow-xs flex items-center gap-2.5 transition-transform hover:-translate-y-0.5"
+              >
+                <div
+                  className="w-9.5 h-9.5 rounded-xl flex items-center justify-center shrink-0 font-mono font-bold text-xs"
+                  style={{ backgroundColor: '#FDF6EB', color: GOLD }}
+                >
+                  &lt;/&gt;
+                </div>
+                <div>
+                  <div className="text-[13px] sm:text-sm font-bold leading-tight" style={{ color: CHARCOAL }}>
+                    Protocols
+                  </div>
+                  <div className="text-[11px] sm:text-xs font-mono-tech mt-0.5 leading-snug" style={{ color: MUTED }}>
+                    I2C / SPI / UART<br />MQTT
+                  </div>
+                </div>
+              </div>
+
+              {/* Panel 3: Academic CGPA */}
+              <div
+                className="p-2.5 sm:p-3 rounded-2xl bg-white border border-[#E5E9E6] shadow-xs flex items-center gap-2.5 transition-transform hover:-translate-y-0.5"
+              >
+                <div
+                  className="w-9.5 h-9.5 rounded-xl flex items-center justify-center shrink-0"
+                  style={{ backgroundColor: '#FDF6EB', color: GOLD }}
+                >
+                  <svg className="w-5 h-5 text-[#C99543]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="6" y1="20" x2="6" y2="14" />
+                    <line x1="12" y1="20" x2="12" y2="8" />
+                    <line x1="18" y1="20" x2="18" y2="4" />
+                  </svg>
+                </div>
+                <div>
+                  <div className="text-[13px] sm:text-sm font-bold leading-tight" style={{ color: CHARCOAL }}>
+                    Academic CGPA
+                  </div>
+                  <div className="text-xs sm:text-[13px] font-mono-tech font-bold mt-0.5" style={{ color: GOLD }}>
+                    8.75 / 10.0
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Action Buttons */}
+            <motion.div variants={item} className="pt-1 flex flex-wrap items-center gap-2.5 sm:gap-3">
+              {/* Primary Teal CTA */}
+              <motion.button
                 onClick={() => scrollTo('projects')}
-                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-sm tracking-wide transition-all shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 hover:-translate-y-0.5"
+                whileHover={{ y: -2 }}
+                whileTap={{ scale: 0.98 }}
+                className="inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full font-bold text-xs sm:text-sm tracking-wide transition-all shadow-sm hover:shadow-md cursor-pointer"
+                style={{
+                  backgroundColor: TEAL,
+                  color: '#FFFFFF',
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#0E5548')}
+                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = TEAL)}
               >
                 <span>Explore Projects</span>
                 <ArrowRight className="w-4 h-4" />
-              </button>
+              </motion.button>
 
-              <button
+              {/* Secondary Download Button */}
+              <motion.button
                 onClick={() => onOpenResumeModal('embedded')}
-                className="inline-flex items-center gap-2 px-5 py-3.5 rounded-xl bg-[#0c162c] hover:bg-[#111f3d] border border-cyan-500/35 hover:border-cyan-400 text-cyan-300 font-mono-tech text-xs font-semibold tracking-wider transition-all hover:-translate-y-0.5"
+                whileHover={{ y: -2 }}
+                whileTap={{ scale: 0.98 }}
+                className="inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 rounded-full bg-white border border-[#E5E9E6] font-semibold text-xs sm:text-[13px] text-[#15252B] tracking-wide shadow-xs hover:border-[#126B5B] hover:text-[#126B5B] transition-all cursor-pointer"
               >
-                <Download className="w-4 h-4" />
-                <span>Download Embedded Resume</span>
-              </button>
+                <Download className="w-3.5 h-3.5 text-[#126B5B]" />
+                <span>Download Resume</span>
+              </motion.button>
 
-              <button
+              {/* Tertiary Contact Button */}
+              <motion.button
                 onClick={() => scrollTo('contact')}
-                className="inline-flex items-center gap-2 px-5 py-3.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-700/80 hover:border-slate-500 text-slate-300 font-medium text-sm transition-all"
+                whileHover={{ y: -1 }}
+                className="inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 rounded-full bg-white border border-[#E5E9E6] font-semibold text-xs sm:text-[13px] text-[#15252B] tracking-wide shadow-xs hover:border-[#15252B] hover:text-[#15252B] transition-all cursor-pointer"
               >
-                <Mail className="w-4 h-4" />
+                <Mail className="w-3.5 h-3.5 text-[#C99543]" />
                 <span>Contact Me</span>
-              </button>
-            </div>
+              </motion.button>
+            </motion.div>
 
-            {/* Social Links */}
-            <div className="pt-2 flex items-center gap-4 text-slate-400">
-              <span className="text-xs font-mono-tech text-slate-500 uppercase tracking-wider">
-                Find Me:
+            {/* Bottom Status Details */}
+            <motion.div variants={item} className="pt-0.5 flex flex-wrap items-center gap-3 text-xs font-mono-tech" style={{ color: MUTED }}>
+              <span className="font-semibold uppercase tracking-wider text-[11px]" style={{ color: CHARCOAL }}>
+                FIND ME ON
               </span>
               <a
                 href={PROFILE_CONFIG.links.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1.5 text-xs font-mono-tech hover:text-cyan-400 transition-colors"
+                className="p-1 text-[#15252B] hover:text-[#126B5B] transition-colors"
+                aria-label="GitHub Profile"
               >
                 <GithubIcon className="w-4 h-4" />
-                <span>GitHub</span>
               </a>
-              <span className="text-slate-700">•</span>
               <a
                 href={PROFILE_CONFIG.links.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1.5 text-xs font-mono-tech hover:text-cyan-400 transition-colors"
+                className="p-1 text-[#15252B] hover:text-[#126B5B] transition-colors"
+                aria-label="LinkedIn Profile"
               >
                 <LinkedinIcon className="w-4 h-4" />
-                <span>LinkedIn</span>
               </a>
-              <span className="text-slate-700">•</span>
-              <span className="text-xs font-mono-tech text-slate-500">
-                Bengaluru, KA
+              <span className="text-[#8E999E]">|</span>
+              <span className="flex items-center gap-1.5 text-[11px]" style={{ color: MUTED }}>
+                <MapPin className="w-3.5 h-3.5 text-[#126B5B]" />
+                <span>Bengaluru, KA</span>
               </span>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
-          {/* Right Column: Desktop Interactive 3D Semiconductor Centerpiece */}
-          <div className="hidden lg:flex lg:col-span-5 flex-col items-center justify-center relative">
-            <div className="w-full aspect-square max-w-[480px] lg:max-w-none rounded-2xl border border-cyan-500/25 bg-gradient-to-b from-[#0a1224]/80 to-[#050810]/90 backdrop-blur-sm p-2 shadow-2xl shadow-cyan-500/15 overflow-hidden relative">
-              {/* Corner Engineering Reticles */}
-              <div className="absolute top-2 left-2 w-3 h-3 border-t-2 border-l-2 border-cyan-400 pointer-events-none z-10" />
-              <div className="absolute top-2 right-2 w-3 h-3 border-t-2 border-r-2 border-cyan-400 pointer-events-none z-10" />
-              <div className="absolute bottom-2 left-2 w-3 h-3 border-b-2 border-l-2 border-cyan-400 pointer-events-none z-10" />
-              <div className="absolute bottom-2 right-2 w-3 h-3 border-b-2 border-r-2 border-cyan-400 pointer-events-none z-10" />
-
-              {/* Hardware Spec Top Bar */}
-              <div className="absolute top-3 left-4 right-4 flex items-center justify-between text-[11px] font-mono-tech text-cyan-400/80 pointer-events-none z-10">
-                <span className="flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
-                  DIE_TEMP :: 38.4°C
-                </span>
-                <span>XTAL :: 40.000 MHz</span>
-              </div>
-
-              {/* Three.js Scene */}
-              <ThreeSceneContainer className="w-full h-full min-h-[460px]" />
-            </div>
-
-            <div className="text-center mt-3 text-[11px] font-mono-tech text-slate-400 flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping" />
-              <span>INTERACTIVE SILICON CORE — DRAG & MOVE POINTER TO ROTATE 3D DIE</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Scroll Indicator */}
-        <div className="flex justify-center mt-6">
-          <button
-            onClick={() => scrollTo('about')}
-            className="flex flex-col items-center gap-1.5 text-slate-500 hover:text-cyan-400 transition-colors font-mono-tech text-[11px] tracking-widest uppercase focus:outline-none"
-            aria-label="Scroll to About section"
+          {/* ── Right Column: Photo Constellation Centerpiece ── */}
+          <motion.div
+            style={{ y: rightColY }}
+            className="hidden lg:flex lg:col-span-6 xl:col-span-6 flex-col items-center justify-center relative lg:-translate-y-4 xl:-translate-y-5"
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, ease: EASE_OUT, delay: 0.2 }}
           >
-            <span>SCROLL_EXPLORE</span>
-            <ChevronDown className="w-4 h-4 animate-bounce" />
-          </button>
+            <HeroProfileCenterpiece />
+          </motion.div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 };

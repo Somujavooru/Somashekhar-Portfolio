@@ -45,5 +45,8 @@ capture_review.cjs
 capture_elements.cjs
 test_interactions.cjs
 verify_production_build.cjs
+capture_projects_detail.cjs
+test_pdf_export.cjs
+test_modal_screenshot.cjs
 screenshots_review/
 

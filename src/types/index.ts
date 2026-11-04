@@ -65,7 +65,7 @@ export interface ExperienceItem {
   roleType: 'embedded' | 'software';
   location: string;
   period: string;
-  statusNotice?: string; // For TODO or unresolved date/title notes
+  statusNotice?: string; // Optional track or role badge
   responsibilities: string[];
   technologies: string[];
   highlights: string[];
@@ -77,7 +77,7 @@ export interface EducationItem {
   location: string;
   period: string;
   grade: string;
-  coursework: string[];
+  coursework?: string[];
 }
 
 export interface AchievementItem {

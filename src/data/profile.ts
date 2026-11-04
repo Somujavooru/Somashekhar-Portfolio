@@ -10,9 +10,8 @@ export const PROFILE_CONFIG = {
   heroStatement: 'I build embedded software, firmware, and connected systems, with additional experience developing software and mobile applications.',
   
   // Contact & Social Links
-  // CONFIGURE YOUR REAL EMAIL HERE WHEN READY:
-  email: 'YOUR_EMAIL_HERE', // Set to your real email address, e.g. 'somashekharjavooru@gmail.com'
-  isEmailConfigured: false, // Set to true once you replace YOUR_EMAIL_HERE
+  email: 'somashekharjavooru@gmail.com',
+  isEmailConfigured: true,
   
   // Phone is omitted by default as requested until explicitly configured
   phone: '', // Leave empty to hide phone on portfolio

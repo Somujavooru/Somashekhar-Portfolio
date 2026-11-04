@@ -75,8 +75,8 @@ export const PROJECTS: Project[] = [
     liveDemoUrl: null,
     isForked: true,
     forkNote: 'Forked baseline camera repository; authored and integrated custom ESP32 TFT Touchscreen UI module, EEZ Studio GUI workflow, and dual-output streaming routines.',
-    image: undefined, // Will render custom technical SVG architecture diagram
-    hasVerifiedScreenshot: false,
+    image: '/images/projects/esp32-cam-system.jpg',
+    hasVerifiedScreenshot: true,
     architectureDiagram: [
       { layer: 'Hardware Interface', description: 'OV2640 camera over 8-bit DVP + SPI ST7789 display controller + I2C/SPI touch sensor', technologies: ['DVP', 'SPI', 'DMA'] },
       { layer: 'Dual-Core Firmware', description: 'Core 0 handles camera capture DMA buffers; Core 1 executes EEZ Studio touch UI and display rendering', technologies: ['FreeRTOS Tasks', 'Ring Buffers'] },
@@ -114,8 +114,8 @@ export const PROJECTS: Project[] = [
     protocols: ['ADC Analog Sampling', 'PWM 50Hz', 'Wi-Fi 802.11', 'HTTP POST / Webhooks'],
     githubUrl: 'https://github.com/Somujavooru/lpg-gas-leakage-detection-system',
     liveDemoUrl: null,
-    image: undefined, // Custom SVG technical schematic diagram
-    hasVerifiedScreenshot: false,
+    image: '/images/projects/lpg-gas-system.jpg',
+    hasVerifiedScreenshot: true,
     architectureDiagram: [
       { layer: 'Sensing Layer', description: 'MQ Gas Sensor -> Analog output -> ESP32 12-bit ADC with moving average smoothing', technologies: ['MQ Sensor', 'ADC GPIO34'] },
       { layer: 'Safety Logic Core', description: 'Threshold comparator with hysteresis; triggers immediate event-driven alarm and state lockout', technologies: ['C++', 'State Machine'] },
@@ -152,9 +152,9 @@ export const PROJECTS: Project[] = [
     ],
     protocols: ['HTTP / TCP', 'JSON Serialization', 'SPI Flash Programming'],
     githubUrl: 'https://github.com/Somujavooru/esp32-ota',
-    liveDemoUrl: null,
-    image: undefined, // Custom SVG technical partition layout
-    hasVerifiedScreenshot: false,
+    image: '/images/projects/esp32-ota-system.jpg',
+    imageAlt: 'ESP32 OTA firmware deployment workbench with dual partition memory telemetry',
+    hasVerifiedScreenshot: true,
     architectureDiagram: [
       { layer: 'Manifest Check', description: 'ESP32 queries remote server for update.json containing target firmware version and binary URL', technologies: ['HTTP Client', 'JSON Parser'] },
       { layer: 'Dual-Partition Flashing', description: 'Firmware writes incoming bytes to inactive OTA partition while current code runs uninterrupted from active partition', technologies: ['SPI Flash API', 'ota_write'] },
@@ -190,8 +190,8 @@ export const PROJECTS: Project[] = [
     protocols: ['ADC 10-bit', 'Digital I/O', 'Relay Switching'],
     githubUrl: 'https://github.com/Somujavooru/automatic-plant-watering-system',
     liveDemoUrl: null,
-    image: undefined, // Custom SVG circuit diagram
-    hasVerifiedScreenshot: false,
+    image: '/images/projects/smart-irrigation-system.jpg',
+    hasVerifiedScreenshot: true,
     architectureDiagram: [
       { layer: 'Sensory Input', description: 'Soil moisture probe measures resistance differential; outputs analog voltage to Arduino A0', technologies: ['Hygrometer', 'ADC A0'] },
       { layer: 'Control Logic', description: 'ATmega328P evaluates reading against dry setpoint; executes pump run duration loop with debounce delay', technologies: ['Embedded C', 'Timer Delays'] },
@@ -233,6 +233,38 @@ export const PROJECTS: Project[] = [
     ]
   },
   {
+    id: 'social-media-publisher',
+    title: 'Unified Social Media Publishing SaaS',
+    subtitle: 'Distributed Multi-Platform Automation Engine with Cloudflare Workers, D1 & Queues',
+    category: 'android-web',
+    categoryLabel: 'Distributed Cloud SaaS',
+    isPrimaryEmbedded: false,
+    problemStatement: 'Digital creators, startups, and marketing teams face severe fragmented workflows, API rate limits, and scheduling failures when publishing content across multiple social platforms simultaneously.',
+    implementationSummary: 'Architected a production-ready, distributed social media publishing SaaS utilizing Cloudflare Workers, Hono, Cloudflare D1 SQL, KV Token storage, R2 Object Storage, and Cloudflare Queues with Durable Object precision alarms. Features a unified React dashboard, multi-platform OAuth token management, resilient asynchronous job workers, and automated Workers AI content optimization.',
+    verifiedDetails: [
+      'Engineered distributed backend with Hono on Cloudflare Workers handling REST endpoints and webhook telemetry at sub-50ms edge latency.',
+      'Designed high-precision scheduling engine with Durable Object alarms triggering Cloudflare Queues for guaranteed asynchronous execution.',
+      'Integrated multi-platform API adapters for X (Twitter) v2, LinkedIn REST API, and Meta Graph API with automatic token refresh in KV.',
+      'Configured Cloudflare R2 bucket for high-throughput media asset staging and Workers AI integration for automated post copy optimization.'
+    ],
+    technologies: ['React', 'Cloudflare Workers', 'Hono', 'Cloudflare D1', 'Cloudflare Queues', 'Durable Objects', 'Cloudflare R2', 'TypeScript', 'Workers AI'],
+    metrics: [
+      { label: 'Edge Latency', value: '<50ms Cloudflare Global' },
+      { label: 'Queue Engine', value: 'Cloudflare Queues + DO' },
+      { label: 'Platform Adapters', value: 'X / LinkedIn / Meta' }
+    ],
+    protocols: ['Cloudflare Queues', 'Durable Objects Alarms', 'RESTful API / Hono', 'OAuth 2.0 PKCE'],
+    githubUrl: 'https://github.com/Somujavooru/social-media-publisher',
+    liveDemoUrl: null,
+    image: '/images/projects/social-media-publisher.jpg',
+    hasVerifiedScreenshot: true,
+    architectureDiagram: [
+      { layer: 'Client Presentation', description: 'Responsive React dashboard managing multi-platform compose queues, scheduling calendars, and live post telemetry', technologies: ['React', 'TypeScript', 'Tailwind'] },
+      { layer: 'Edge API & Queues', description: 'Hono API Worker routing payloads to Cloudflare D1, KV, and queuing jobs via Durable Object alarms and Cloudflare Queues', technologies: ['Cloudflare Workers', 'Hono', 'Queues', 'Durable Objects'] },
+      { layer: 'Media & Platform Dispatch', description: 'R2 object storage asset management, Workers AI copy tuning, and consumer workers dispatching to X, LinkedIn, and Meta APIs', technologies: ['Cloudflare R2', 'Workers AI', 'Platform Adapters'] }
+    ]
+  },
+  {
     id: 'edunova-platform',
     title: 'EduNova Tech — Student Project Platform',
     subtitle: 'Full-Stack Technical Project Discovery & Collaboration Engine',
@@ -255,8 +287,8 @@ export const PROJECTS: Project[] = [
     protocols: ['HTTP/2', 'RESTful JSON', 'SQL ORM'],
     githubUrl: 'https://github.com/Somujavooru/EduNova_Tech',
     liveDemoUrl: null,
-    image: undefined, // Custom SVG technical web interface preview
-    hasVerifiedScreenshot: false,
+    image: '/images/projects/edunova-platform.jpg',
+    hasVerifiedScreenshot: true,
     architectureDiagram: [
       { layer: 'Web Client', description: 'Responsive Next.js application with modular UI components and real-time project filtering', technologies: ['Next.js 14', 'TypeScript', 'Tailwind'] },
       { layer: 'API Layer', description: 'REST API routing handling authentication, project discovery queries, and support submissions', technologies: ['Node.js', 'API Routes'] },
@@ -266,31 +298,97 @@ export const PROJECTS: Project[] = [
   {
     id: 'skill-assessment-agent',
     title: 'AI-Powered Skill Assessment Agent',
-    subtitle: 'Automated Technical Evaluation Pipeline & Benchmarking',
+    subtitle: 'LLM-Driven Technical Evaluation, Resume Parsing & Benchmarking Suite',
     category: 'software-ai',
-    categoryLabel: 'Software & AI (Supporting)',
+    categoryLabel: 'Generative AI & Agentic Suite',
     isPrimaryEmbedded: false,
-    problemStatement: 'Manual assessment of technical problem-solving and coding logic is time-intensive and susceptible to subjective grading variations.',
-    implementationSummary: 'Engineered an automated Python-based evaluation agent that benchmarks technical coding responses against structured rubrics, analyzing algorithmic complexity, syntax fidelity, and edge-case coverage.',
+    problemStatement: 'Technical hiring and skill benchmarking require hours of manual resume parsing, subjective grading of candidate code submissions, and lack automated structured gap analysis.',
+    implementationSummary: 'Engineered an end-to-end AI-powered skill assessment application using Streamlit, LangChain, and Generative AI (Gemini & OpenAI). Ingests multi-format resumes (PDF, DOCX) and code submissions, extracts skill libraries across 30+ domains, runs automated technical evaluations, and generates comprehensive PDF assessment reports with scoring breakdowns and personalized learning paths.',
     verifiedDetails: [
-      'Developed modular Python assessment pipeline evaluating programming submissions across multiple languages.',
-      'Constructed rubric grading matrix evaluating algorithmic correctness, time complexity, and code readability.',
-      'Structured standardized JSON output reporting candidate proficiency indicators and actionable development paths.'
+      'Developed Streamlit reactive interface for candidate resume uploads, code input, and live assessment telemetry.',
+      'Implemented LangChain evaluation agents powered by Google Generative AI (Gemini) and OpenAI API for semantic code and resume analysis.',
+      'Constructed dual multi-format document parser utilizing PyPDF and python-docx extracting candidate competencies across 30+ technical keywords.',
+      'Automated dynamic executive report compilation in Python using FPDF outputting structured scorecards and remediation roadmaps.'
     ],
-    technologies: ['Python 3', 'Data Structures & Algorithms', 'Automated Grading', 'NLP Pipelines', 'JSON Evaluation'],
+    technologies: ['Streamlit', 'Python 3', 'LangChain', 'Gemini AI', 'OpenAI API', 'PyPDF', 'python-docx', 'FPDF'],
     metrics: [
-      { label: 'Evaluation Engine', value: 'Automated Scoring' },
-      { label: 'Output Schema', value: 'Standardized JSON' }
+      { label: 'Skills Taxonomy', value: '30+ Tech Domains' },
+      { label: 'Document Parser', value: 'PDF & DOCX Multi-Format' },
+      { label: 'Report Generation', value: 'Automated FPDF Reports' }
     ],
-    protocols: ['CLI / API', 'JSON Schema'],
+    protocols: ['Generative AI API', 'LangChain Agents', 'AST Code Parsing'],
     githubUrl: 'https://github.com/Somujavooru/AI-Powered-Skill-Assessment-Agent',
-    liveDemoUrl: null,
-    image: undefined, // Custom SVG assessment flow diagram
-    hasVerifiedScreenshot: false,
+    liveDemoUrl: 'https://ai-powered-skill-assessment-agent.streamlit.app/',
+    image: '/images/projects/skill-assessment-agent.jpg',
+    hasVerifiedScreenshot: true,
     architectureDiagram: [
-      { layer: 'Ingestion Engine', description: 'Parses code submissions and problem specifications into an abstract syntax tree representation', technologies: ['Python AST', 'Regex'] },
-      { layer: 'Benchmark Evaluation', description: 'Compares solution against unit assertions and algorithmic complexity criteria', technologies: ['Execution Sandbox', 'Rubric Matrix'] },
-      { layer: 'Scoring & Telemetry', description: 'Outputs structured assessment scores and improvement recommendations', technologies: ['JSON Output', 'Telemetry Logger'] }
+      { layer: 'Interactive Web UI', description: 'Streamlit dashboard managing resume ingestion, code benchmarking, and live evaluation display', technologies: ['Streamlit', 'Python UI'] },
+      { layer: 'Agentic Intelligence', description: 'LangChain pipeline integrating Gemini and OpenAI LLMs for semantic extraction and rubric scoring', technologies: ['LangChain', 'Google Gemini', 'OpenAI'] },
+      { layer: 'Document & PDF Engine', description: 'PyPDF and python-docx multi-format parsing paired with FPDF executive summary scorecard generator', technologies: ['PyPDF', 'python-docx', 'FPDF'] }
+    ]
+  },
+  {
+    id: 'food-health-app',
+    title: 'Food & Health Contextual Nutrition App',
+    subtitle: 'Full-Stack Nutrition Intelligence with Flask REST API & React 19 Frontend',
+    category: 'android-web',
+    categoryLabel: 'Full-Stack Web App',
+    isPrimaryEmbedded: false,
+    problemStatement: 'Modern wellness and diet trackers fail to adapt nutritional recommendations dynamically based on real-time bio-context, such as sleep quality, current ambient weather conditions, and metabolic timing.',
+    implementationSummary: 'Architected a full-stack contextual nutrition platform with a Python Flask REST API backend and a responsive React 19 + Tailwind CSS frontend. Features dynamic meal recommendations based on biometric and environmental factors (sleep quality, weather, time of day), macro tracking (calories, protein, carbs, fats), and interactive meal filtering.',
+    verifiedDetails: [
+      'Engineered Python Flask REST API serving dynamic meal datasets with multi-variable contextual filtering (time, sleep, weather).',
+      'Built reactive frontend in React 19 and Vite styled with modern Tailwind CSS utilities and custom macro progress visualization.',
+      'Configured Flask-CORS middleware for seamless bi-directional client-server telemetry and payload serialization.',
+      'Designed structured meal schema logging calories, protein, carbohydrates, fats, and wellness contextual tags.'
+    ],
+    technologies: ['React 19', 'Python (Flask)', 'Flask-CORS', 'Vite', 'Tailwind CSS', 'REST API', 'JavaScript', 'Contextual UI'],
+    metrics: [
+      { label: 'Architecture', value: 'Full-Stack (Flask + React 19)' },
+      { label: 'Recommendation Engine', value: 'Multi-Variable Bio-Matching' },
+      { label: 'State Sync', value: 'RESTful JSON / CORS' }
+    ],
+    protocols: ['HTTP / REST', 'JSON Serialization', 'CORS Middleware'],
+    githubUrl: 'https://github.com/Somujavooru/food-health-app',
+    liveDemoUrl: null,
+    image: '/images/projects/food-health-app.jpg',
+    hasVerifiedScreenshot: true,
+    architectureDiagram: [
+      { layer: 'Frontend Presentation', description: 'React 19 + Tailwind CSS responsive UI with dynamic macro charts and meal cards', technologies: ['React 19', 'Vite', 'Tailwind'] },
+      { layer: 'API Gateway', description: 'Flask Python server handling contextual query routing and real-time meal filtering', technologies: ['Python Flask', 'Flask-CORS'] },
+      { layer: 'Nutrition Database', description: 'Structured JSON catalog detailing calories, macros, and environmental suitability rules', technologies: ['JSON Dataset', 'Recommendation Engine'] }
+    ]
+  },
+  {
+    id: 'hospital-appointment-system',
+    title: 'Government Hospital Appointment Management System',
+    subtitle: 'Full-Stack Healthcare Operations Portal with Role-Based JWT Auth',
+    category: 'android-web',
+    categoryLabel: 'Full-Stack Web System',
+    isPrimaryEmbedded: false,
+    problemStatement: 'Public healthcare facilities face overwhelming patient overcrowding, manual scheduling bottlenecks, and fragmented department doctor availability records.',
+    implementationSummary: 'Built a comprehensive full-stack healthcare workflow management system for government hospitals. Features role-based access control (Patient, Doctor, Administrator), automated appointment scheduling, doctor availability calendars, department queues, and secure patient records backed by Node.js, Express, and MongoDB.',
+    verifiedDetails: [
+      'Engineered backend REST API with Node.js and Express implementing role-based JWT authentication for Patients, Doctors, and Admins.',
+      'Designed MongoDB relational schemas with Mongoose for doctors, departments, patient histories, and time slots.',
+      'Created responsive patient booking interface and administrative schedule management dashboard using Bootstrap and JavaScript.',
+      'Implemented appointment status state machine (Waiting, In Session, Completed, Cancelled) preventing scheduling conflicts.'
+    ],
+    technologies: ['Node.js', 'Express.js', 'MongoDB', 'Mongoose', 'JWT Authentication', 'JavaScript', 'Bootstrap', 'REST APIs'],
+    metrics: [
+      { label: 'User Roles', value: 'Patient / Doctor / Admin' },
+      { label: 'Auth Security', value: 'Role-Based JWT' },
+      { label: 'Database', value: 'MongoDB + Mongoose' }
+    ],
+    protocols: ['HTTP / REST', 'JSON Web Tokens (JWT)', 'Bcrypt Hashing'],
+    githubUrl: 'https://github.com/Somujavooru/Government-Hospital-Appointment-Management-System',
+    liveDemoUrl: null,
+    image: '/images/projects/hospital-appointment-system.jpg',
+    hasVerifiedScreenshot: true,
+    architectureDiagram: [
+      { layer: 'Client Interface', description: 'Responsive patient booking portal, doctor schedule dashboard, and administrative queue management', technologies: ['HTML5', 'Bootstrap 5', 'JavaScript'] },
+      { layer: 'Backend REST API', description: 'Node.js + Express API handling role-based JWT authentication, route protection, and scheduling logic', technologies: ['Node.js', 'Express', 'JWT Middleware'] },
+      { layer: 'Data Storage', description: 'MongoDB document database managed via Mongoose models for users, appointments, and hospital departments', technologies: ['MongoDB', 'Mongoose ODM'] }
     ]
   }
 ];

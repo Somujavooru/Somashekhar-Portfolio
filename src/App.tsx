@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import Lenis from 'lenis';
 import { Navbar } from './components/common/Navbar';
 import { Footer } from './components/common/Footer';
+import { ScrollProgressBar } from './components/common/ScrollProgressBar';
+import { FloatingScrollHUD } from './components/common/FloatingScrollHUD';
 import { HeroSection } from './sections/HeroSection';
 import { AboutSection } from './sections/AboutSection';
 import { SkillsSection } from './sections/SkillsSection';
 import { ProjectsSection } from './sections/ProjectsSection';
+import { StartupSection } from './sections/StartupSection';
 import { ExperienceSection } from './sections/ExperienceSection';
 import { EducationSection } from './sections/EducationSection';
 import { ResumeSection } from './sections/ResumeSection';
@@ -15,47 +19,96 @@ export const App: React.FC = () => {
   const [resumeModalOpen, setResumeModalOpen] = useState(false);
   const [resumeType, setResumeType] = useState<'embedded' | 'software'>('embedded');
 
+  useEffect(() => {
+    // Initialize Lenis smooth inertial scrolling physics
+    const lenis = new Lenis({
+      duration: 1.15,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: 'vertical',
+      smoothWheel: true,
+      touchMultiplier: 1.5,
+    });
+
+    (window as any).lenis = lenis;
+
+    let animationFrameId: number;
+    function raf(time: number) {
+      lenis.raf(time);
+      animationFrameId = requestAnimationFrame(raf);
+    }
+    animationFrameId = requestAnimationFrame(raf);
+
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      lenis.destroy();
+      delete (window as any).lenis;
+    };
+  }, []);
+
   const handleOpenResume = (type: 'embedded' | 'software') => {
     setResumeType(type);
     setResumeModalOpen(true);
   };
 
   return (
-    <div className="min-h-screen bg-[#06090f] text-slate-100 flex flex-col font-sans selection:bg-cyan-500/30 selection:text-cyan-200">
+    <div
+      className="min-h-screen flex flex-col font-sans bg-[#FAFAF7] text-[#15252B]"
+      style={{
+        backgroundColor: '#FAFAF7',
+        color: '#15252B',
+        // Refined teal selection highlight
+        '--tw-selection-bg': 'rgba(18,107,91,0.15)',
+        '--tw-selection-color': '#15252B',
+      } as React.CSSProperties}
+    >
+      {/* Cinematic scroll progress indicator */}
+      <ScrollProgressBar />
+
+      {/* Floating Tactical Telemetry HUD Rail */}
+      <FloatingScrollHUD />
+
       {/* Fixed Sticky Header */}
       <Navbar />
 
       {/* Main Content Sections */}
-      <main className="flex-1">
-        {/* 1. Hero Section with Interactive 3D Semiconductor Core */}
-        <HeroSection onOpenResumeModal={handleOpenResume} />
+      <main className="flex-1 relative">
+        {/* Sticky Pinned Hero Chamber — Stays fixed at viewport top while card deck slides over */}
+        <div className="sticky top-0 z-0 h-screen min-h-screen w-full overflow-hidden">
+          <HeroSection onOpenResumeModal={handleOpenResume} />
+        </div>
 
-        {/* 2. About Me: Engineering Philosophy & Academic Grounding */}
-        <AboutSection />
+        {/* Card Deck Layer — Physically slides UP and OVER the Hero chamber like a card opening */}
+        <div className="relative z-10 bg-[#FAFAF7]">
+          {/* 2. About — Engineering Philosophy & Academic Grounding */}
+          <AboutSection />
 
-        {/* 3. Core Technical Skills Matrix */}
-        <SkillsSection />
+          {/* 3. Skills — Core Technical Competency Matrix */}
+          <SkillsSection />
 
-        {/* 4. Featured Embedded Projects, IoT Systems & Applications */}
-        <ProjectsSection />
+          {/* 4. Projects — Embedded Systems & Application Case Studies */}
+          <ProjectsSection />
 
-        {/* 5. Field Experience & Internship Timeline */}
-        <ExperienceSection />
+          {/* 5. Freelance Development Services — EduNova Venture */}
+          <StartupSection />
 
-        {/* 6. Education, Certifications & Achievements */}
-        <EducationSection />
+          {/* 6. Experience — Field Internship Timeline */}
+          <ExperienceSection />
 
-        {/* 7. Dual Resume Downloads */}
-        <ResumeSection onOpenResumeModal={handleOpenResume} />
+          {/* 6. Education — Credentials & Achievements */}
+          <EducationSection />
 
-        {/* 8. Recruiter Dispatch & Contact */}
-        <ContactSection />
+          {/* 7. Resume — Dual Role-Tailored Downloads */}
+          <ResumeSection onOpenResumeModal={handleOpenResume} />
+
+          {/* 8. Contact — Recruiter Dispatch */}
+          <ContactSection />
+        </div>
       </main>
 
-      {/* Comprehensive Engineering Footer */}
+      {/* Footer */}
       <Footer />
 
-      {/* Quick Resume Inspection & Download Modal */}
+      {/* Resume Preview & Download Modal */}
       <ResumeModal
         isOpen={resumeModalOpen}
         onClose={() => setResumeModalOpen(false)}

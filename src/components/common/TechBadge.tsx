@@ -2,23 +2,25 @@ import React from 'react';
 
 interface TechBadgeProps {
   label: string;
-  variant?: 'cyan' | 'blue' | 'violet' | 'slate' | 'emerald';
+  variant?: 'teal' | 'amber' | 'cyan' | 'blue' | 'violet' | 'slate' | 'emerald';
   size?: 'sm' | 'md';
   icon?: React.ReactNode;
 }
 
 export const TechBadge: React.FC<TechBadgeProps> = ({
   label,
-  variant = 'cyan',
+  variant = 'teal',
   size = 'sm',
   icon,
 }) => {
   const variantStyles = {
-    cyan: 'bg-cyan-950/40 text-cyan-300 border-cyan-500/30 hover:border-cyan-400',
-    blue: 'bg-sky-950/40 text-sky-300 border-sky-500/30 hover:border-sky-400',
-    violet: 'bg-indigo-950/40 text-indigo-300 border-indigo-500/30 hover:border-indigo-400',
-    slate: 'bg-slate-900/60 text-slate-300 border-slate-700/50 hover:border-slate-500',
-    emerald: 'bg-emerald-950/40 text-emerald-300 border-emerald-500/30 hover:border-emerald-400',
+    teal: 'bg-[#E8F4F0] text-[#126B5B] border-[#126B5B]/30 hover:border-[#126B5B]',
+    amber: 'bg-[#FDF6EB] text-[#C99543] border-[#C99543]/30 hover:border-[#C99543]',
+    cyan: 'bg-[#E8F4F0] text-[#126B5B] border-[#126B5B]/30 hover:border-[#126B5B]',
+    blue: 'bg-[#FAFAF7] text-[#15252B] border-[#E5E9E6] hover:border-[#126B5B]/30',
+    violet: 'bg-purple-50 text-purple-700 border-purple-200 hover:border-purple-300',
+    slate: 'bg-[#FAFAF7] text-[#68757A] border-[#E5E9E6] hover:border-[#68757A]',
+    emerald: 'bg-[#E8F4F0] text-[#126B5B] border-[#126B5B]/30 hover:border-[#126B5B]',
   };
 
   const sizeStyles = {
@@ -28,7 +30,7 @@ export const TechBadge: React.FC<TechBadgeProps> = ({
 
   return (
     <span
-      className={`inline-flex items-center gap-1.5 rounded-md border font-mono-tech font-medium transition-colors ${variantStyles[variant]} ${sizeStyles[size]}`}
+      className={`inline-flex items-center gap-1.5 rounded-md border font-mono font-medium transition-colors ${variantStyles[variant]} ${sizeStyles[size]}`}
     >
       {icon && <span className="opacity-80">{icon}</span>}
       <span>{label}</span>

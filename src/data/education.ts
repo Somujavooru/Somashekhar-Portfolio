@@ -28,6 +28,14 @@ export const EDUCATION_LIST: EducationItem[] = [
       'Mathematics',
       'Biology'
     ]
+  },
+  {
+    degree: 'SSLC (Class 10)',
+    institution: 'Government High School, Chittapur',
+    location: 'Chittapur, Karnataka',
+    period: 'Jun 2018 – Apr 2019',
+    grade: 'Score: 78.4%',
+    coursework: []
   }
 ];
 
