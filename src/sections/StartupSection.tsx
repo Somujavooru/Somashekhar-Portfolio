@@ -285,7 +285,8 @@ export const StartupSection: React.FC = () => {
   };
 
   const handleCustomRequest = () => {
-    scrollToContact();
+    const customUrl = EDUNOVA_STARTUP.customProjectUrl || 'https://edunova-forge.edunovaforge.workers.dev/requests';
+    window.open(customUrl, '_blank', 'noopener,noreferrer');
   };
 
   const handleRequestQuote = (serviceTitle: QuoteServiceType) => {

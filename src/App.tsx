@@ -3,7 +3,6 @@ import Lenis from 'lenis';
 import { Navbar } from './components/common/Navbar';
 import { Footer } from './components/common/Footer';
 import { ScrollProgressBar } from './components/common/ScrollProgressBar';
-import { FloatingScrollHUD } from './components/common/FloatingScrollHUD';
 import { HeroSection } from './sections/HeroSection';
 import { AboutSection } from './sections/AboutSection';
 import { SkillsSection } from './sections/SkillsSection';
@@ -64,16 +63,13 @@ export const App: React.FC = () => {
       {/* Cinematic scroll progress indicator */}
       <ScrollProgressBar />
 
-      {/* Floating Tactical Telemetry HUD Rail */}
-      <FloatingScrollHUD />
-
       {/* Fixed Sticky Header */}
       <Navbar />
 
       {/* Main Content Sections */}
       <main className="flex-1 relative">
-        {/* Sticky Pinned Hero Chamber — Stays fixed at viewport top while card deck slides over */}
-        <div className="sticky top-0 z-0 h-screen min-h-screen w-full overflow-hidden">
+        {/* Pinned Hero Chamber — Stays fixed at viewport top on desktop while card deck slides over */}
+        <div className="relative lg:sticky lg:top-0 z-0 min-h-screen lg:h-screen w-full overflow-hidden">
           <HeroSection onOpenResumeModal={handleOpenResume} />
         </div>
 

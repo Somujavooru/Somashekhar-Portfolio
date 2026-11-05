@@ -11,10 +11,7 @@ import {
   User, 
   Mail, 
   Phone, 
-  Building2, 
   Briefcase, 
-  IndianRupee, 
-  Clock, 
   MessageSquare,
   ExternalLink
 } from 'lucide-react';
@@ -38,10 +35,7 @@ export const RequestQuoteModal: React.FC<RequestQuoteModalProps> = ({
     name: '',
     email: '',
     phone: '',
-    company: '',
     service: initialService,
-    budget: '',
-    timeline: '',
     requirements: '',
   });
 
@@ -144,19 +138,16 @@ export const RequestQuoteModal: React.FC<RequestQuoteModalProps> = ({
     }
   };
 
-  const fallbackEmailBody = `Quote Request for ${formData.service}\n\n` +
-    `Client Name: ${formData.name}\n` +
+  const fallbackEmailBody = `Freelance Enquiry for ${formData.service}\n\n` +
+    `Full Name: ${formData.name}\n` +
     `Email: ${formData.email}\n` +
     `Contact Number: ${formData.phone || 'Not provided'}\n` +
-    `Company/Organization: ${formData.company || 'Not provided'}\n` +
-    `Service: ${formData.service}\n` +
-    `Expected Budget: ${formData.budget || 'Not specified'}\n` +
-    `Preferred Timeline: ${formData.timeline || 'Not specified'}\n\n` +
+    `Service: ${formData.service}\n\n` +
     `Project Requirements:\n${formData.requirements}\n\n` +
-    `-- Submitted via EduNova Forge Portfolio Quote Request`;
+    `-- Submitted via Portfolio Freelance Enquiry`;
 
-  const gmailWebUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(recipientEmail)}&su=${encodeURIComponent(`[Quote Request] ${formData.service} — ${formData.name}`)}&body=${encodeURIComponent(fallbackEmailBody)}`;
-  const mailtoUrl = `mailto:${recipientEmail}?subject=${encodeURIComponent(`[Quote Request] ${formData.service} — ${formData.name}`)}&body=${encodeURIComponent(fallbackEmailBody)}`;
+  const gmailWebUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(recipientEmail)}&su=${encodeURIComponent(`[Freelance Enquiry] ${formData.service} — ${formData.name}`)}&body=${encodeURIComponent(fallbackEmailBody)}`;
+  const mailtoUrl = `mailto:${recipientEmail}?subject=${encodeURIComponent(`[Freelance Enquiry] ${formData.service} — ${formData.name}`)}&body=${encodeURIComponent(fallbackEmailBody)}`;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -170,7 +161,7 @@ export const RequestQuoteModal: React.FC<RequestQuoteModalProps> = ({
     const accessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
 
     if (!accessKey || !accessKey.trim()) {
-      setApiError('Web3Forms Access Key is not configured. Please use the direct email options below to transmit your quote request.');
+      setApiError('Web3Forms Access Key is not configured. Please use the direct email options below to transmit your enquiry.');
       setIsSubmitting(false);
       return;
     }
@@ -187,13 +178,10 @@ export const RequestQuoteModal: React.FC<RequestQuoteModalProps> = ({
           name: formData.name,
           email: formData.email,
           phone: formData.phone || 'Not provided',
-          company: formData.company || 'Not provided',
           service: formData.service,
-          budget: formData.budget || 'Not specified',
-          timeline: formData.timeline || 'Not specified',
-          subject: `[Freelance Quote Request] ${formData.service} — ${formData.name}`,
+          subject: `[Freelance Enquiry] ${formData.service} — ${formData.name}`,
           message: fallbackEmailBody,
-          from_name: `${formData.name} (Quote Request)`,
+          from_name: `${formData.name} (Freelance Enquiry)`,
           to_email: recipientEmail,
         }),
       });
@@ -213,7 +201,7 @@ export const RequestQuoteModal: React.FC<RequestQuoteModalProps> = ({
         setApiError(data.message || 'Submission was not accepted by the service. Please try again or use direct email.');
       }
     } catch (err: any) {
-      setApiError(err?.message || 'A network error occurred while submitting your quote request. Please retry or dispatch via email.');
+      setApiError(err?.message || 'A network error occurred while submitting your enquiry. Please retry or dispatch via email.');
     } finally {
       setIsSubmitting(false);
     }
@@ -224,10 +212,7 @@ export const RequestQuoteModal: React.FC<RequestQuoteModalProps> = ({
       name: '',
       email: '',
       phone: '',
-      company: '',
       service: initialService,
-      budget: '',
-      timeline: '',
       requirements: '',
     });
     setErrors({});
@@ -253,7 +238,7 @@ export const RequestQuoteModal: React.FC<RequestQuoteModalProps> = ({
           exit={{ opacity: 0, scale: 0.95, y: 15 }}
           transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
           onClick={(e) => e.stopPropagation()}
-          className="relative w-full max-w-2xl bg-white rounded-2xl sm:rounded-3xl border border-[#E5E9E6] shadow-2xl my-auto text-[#15252B] overflow-hidden flex flex-col max-h-[85vh] sm:max-h-[90vh]"
+          className="relative w-full max-w-xl bg-white rounded-2xl sm:rounded-3xl border border-[#E5E9E6] shadow-2xl my-auto text-[#15252B] overflow-hidden flex flex-col max-h-[88vh]"
           data-lenis-prevent="true"
         >
           {/* ========================================================
@@ -266,13 +251,13 @@ export const RequestQuoteModal: React.FC<RequestQuoteModalProps> = ({
               </div>
               <div>
                 <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10.5px] font-mono bg-[#FDF6EB] border border-[#C99543]/20 text-[#C99543] font-bold mb-1">
-                  <span>EDUNOVA FORGE • FREELANCE PROPOSAL</span>
+                  <span>EDUNOVA FORGE • FREELANCE SERVICES</span>
                 </div>
                 <h3 id="quote-modal-title" className="text-xl sm:text-2xl font-bold font-display text-[#15252B] leading-tight">
                   Request a Quote
                 </h3>
-                <p className="text-xs sm:text-[13.5px] text-[#556368] mt-0.5">
-                  Share your project scope to receive a tailored technical estimate and delivery roadmap.
+                <p className="text-xs sm:text-[13px] text-[#556368] mt-0.5">
+                  Send your enquiry to discuss project requirements, timelines, and pricing.
                 </p>
               </div>
             </div>
@@ -290,7 +275,7 @@ export const RequestQuoteModal: React.FC<RequestQuoteModalProps> = ({
           {/* ========================================================
               MODAL BODY (SCROLLABLE ON SMALL SCREENS)
              ======================================================== */}
-          <div className="overflow-y-auto overscroll-contain p-5 sm:p-6 space-y-4 sm:space-y-5 flex-1" data-lenis-prevent="true">
+          <div className="overflow-y-auto overscroll-contain p-5 sm:p-6 space-y-4 flex-1" data-lenis-prevent="true">
             
             {/* Highlighted Selected-Service Panel */}
             <div className="p-3.5 sm:p-4 rounded-xl sm:rounded-2xl bg-gradient-to-r from-[#F4F9F6] via-[#F9FCFA] to-[#FFF9F2] border border-[#DCEBE5] flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 shadow-2xs">
@@ -324,12 +309,12 @@ export const RequestQuoteModal: React.FC<RequestQuoteModalProps> = ({
                 </div>
                 <div>
                   <h4 className="text-xl font-bold text-[#15252B] font-display">
-                    Quote Request Received!
+                    Enquiry Sent Successfully!
                   </h4>
                   <p className="text-xs sm:text-sm text-[#404D53] max-w-md mx-auto leading-relaxed mt-1">
-                    Thank you, <strong className="text-[#15252B]">{formData.name}</strong>! Your quote request for{' '}
+                    Thank you, <strong className="text-[#15252B]">{formData.name}</strong>! Your enquiry for{' '}
                     <strong className="text-[#126B5B]">{formData.service}</strong> has been transmitted directly to{' '}
-                    <strong className="text-[#15252B] font-mono">{recipientEmail}</strong>. Somashekhar will review your requirements and respond within 24–48 hours.
+                    <strong className="text-[#15252B] font-mono">{recipientEmail}</strong>. Somashekhar will review your requirements and respond shortly.
                   </p>
                 </div>
 
@@ -337,9 +322,7 @@ export const RequestQuoteModal: React.FC<RequestQuoteModalProps> = ({
                   <div><span className="text-[#68757A]">Client:</span> {formData.name}</div>
                   <div><span className="text-[#68757A]">Email:</span> {formData.email}</div>
                   {formData.phone && <div><span className="text-[#68757A]">Phone:</span> {formData.phone}</div>}
-                  {formData.company && <div><span className="text-[#68757A]">Organization:</span> {formData.company}</div>}
-                  {formData.budget && <div><span className="text-[#68757A]">Budget:</span> {formData.budget}</div>}
-                  {formData.timeline && <div><span className="text-[#68757A]">Timeline:</span> {formData.timeline}</div>}
+                  <div><span className="text-[#68757A]">Service:</span> {formData.service}</div>
                 </div>
 
                 <div className="flex items-center justify-center gap-3 pt-2">
@@ -359,7 +342,7 @@ export const RequestQuoteModal: React.FC<RequestQuoteModalProps> = ({
               </div>
             ) : (
               /* ========================================================
-                  ACTIVE QUOTE FORM
+                  ACTIVE ENQUIRY FORM
                  ======================================================== */
               <form onSubmit={handleSubmit} className="space-y-4" noValidate>
                 {apiError && (
@@ -389,7 +372,7 @@ export const RequestQuoteModal: React.FC<RequestQuoteModalProps> = ({
                   </div>
                 )}
 
-                {/* Row 1: Full Name & Email Address */}
+                {/* Field 1 & 2: Full Name (required) & Email Address (required) */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
                   {/* Full Name */}
                   <div>
@@ -402,7 +385,7 @@ export const RequestQuoteModal: React.FC<RequestQuoteModalProps> = ({
                       type="text"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      placeholder="e.g. Alex Morgan / Organization"
+                      placeholder="e.g. Alex Morgan"
                       className={`w-full px-3.5 py-2.5 rounded-xl bg-[#FAFAF7] border ${
                         errors.name ? 'border-rose-500' : 'border-[#E5E9E6] focus:border-[#126B5B]'
                       } text-[#15252B] placeholder-[#8A969B] text-xs sm:text-sm focus:outline-none focus:bg-white transition-colors`}
@@ -426,7 +409,7 @@ export const RequestQuoteModal: React.FC<RequestQuoteModalProps> = ({
                       type="email"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      placeholder="name@company.com"
+                      placeholder="name@example.com"
                       className={`w-full px-3.5 py-2.5 rounded-xl bg-[#FAFAF7] border ${
                         errors.email ? 'border-rose-500' : 'border-[#E5E9E6] focus:border-[#126B5B]'
                       } text-[#15252B] placeholder-[#8A969B] text-xs sm:text-sm focus:outline-none focus:bg-white transition-colors`}
@@ -440,7 +423,7 @@ export const RequestQuoteModal: React.FC<RequestQuoteModalProps> = ({
                   </div>
                 </div>
 
-                {/* Row 2: Contact Number (Optional) & Company / Organization (Optional) */}
+                {/* Field 3 & 4: Contact Number (optional) & Service (automatically selected) */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
                   {/* Contact Number (Optional) */}
                   <div>
@@ -455,7 +438,7 @@ export const RequestQuoteModal: React.FC<RequestQuoteModalProps> = ({
                       type="tel"
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      placeholder="Enter your contact number"
+                      placeholder="+91 98765 43210"
                       className={`w-full px-3.5 py-2.5 rounded-xl bg-[#FAFAF7] border ${
                         errors.phone ? 'border-rose-500' : 'border-[#E5E9E6] focus:border-[#126B5B]'
                       } text-[#15252B] placeholder-[#8A969B] text-xs sm:text-sm focus:outline-none focus:bg-white transition-colors`}
@@ -468,33 +451,15 @@ export const RequestQuoteModal: React.FC<RequestQuoteModalProps> = ({
                     )}
                   </div>
 
-                  {/* Company / Organization (Optional) */}
+                  {/* Service (Automatically selected) */}
                   <div>
                     <label className="flex items-center justify-between text-xs font-mono uppercase mb-1.5 text-[#15252B] font-semibold">
                       <span className="flex items-center gap-1.5">
-                        <Building2 className="w-3.5 h-3.5 text-[#126B5B]" />
-                        <span>Company / Organization</span>
+                        <Briefcase className="w-3.5 h-3.5 text-[#126B5B]" />
+                        <span>Service</span>
+                        <span className="text-[#126B5B]">*</span>
                       </span>
-                      <span className="text-[10px] text-[#8A969B] font-normal normal-case">Optional</span>
-                    </label>
-                    <input
-                      type="text"
-                      value={formData.company}
-                      onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                      placeholder="e.g. Acme Corp / Studio / Individual"
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAFAF7] border border-[#E5E9E6] focus:border-[#126B5B] text-[#15252B] placeholder-[#8A969B] text-xs sm:text-sm focus:outline-none focus:bg-white transition-colors"
-                    />
-                  </div>
-                </div>
-
-                {/* Row 3: Service Dropdown, Expected Budget & Preferred Timeline */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4">
-                  {/* Service (Required Dropdown) */}
-                  <div>
-                    <label className="flex items-center gap-1.5 text-xs font-mono uppercase mb-1.5 text-[#15252B] font-semibold">
-                      <Briefcase className="w-3.5 h-3.5 text-[#126B5B]" />
-                      <span>Service</span>
-                      <span className="text-[#126B5B]">*</span>
+                      <span className="text-[10px] text-[#126B5B] font-mono font-bold">Auto-selected</span>
                     </label>
                     <select
                       value={formData.service}
@@ -506,55 +471,9 @@ export const RequestQuoteModal: React.FC<RequestQuoteModalProps> = ({
                       <option value="Engineering Projects">Engineering Projects</option>
                     </select>
                   </div>
-
-                  {/* Expected Budget (Optional Dropdown) */}
-                  <div>
-                    <label className="flex items-center justify-between text-xs font-mono uppercase mb-1.5 text-[#15252B] font-semibold">
-                      <span className="flex items-center gap-1.5">
-                        <IndianRupee className="w-3.5 h-3.5 text-[#126B5B]" />
-                        <span>Expected Budget</span>
-                      </span>
-                      <span className="text-[10px] text-[#8A969B] font-normal normal-case">Optional</span>
-                    </label>
-                    <select
-                      value={formData.budget}
-                      onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
-                      className="w-full px-3 py-2.5 rounded-xl bg-[#FAFAF7] border border-[#E5E9E6] focus:border-[#126B5B] text-[#15252B] text-xs sm:text-sm focus:outline-none focus:bg-white transition-colors cursor-pointer"
-                    >
-                      <option value="">Select budget range...</option>
-                      <option value="Under ₹5,000">Under ₹5,000</option>
-                      <option value="₹5,000 – ₹15,000">₹5,000 – ₹15,000</option>
-                      <option value="₹15,000 – ₹30,000">₹15,000 – ₹30,000</option>
-                      <option value="₹30,000 – ₹60,000">₹30,000 – ₹60,000</option>
-                      <option value="₹60,000+">₹60,000+ (Custom / Enterprise)</option>
-                    </select>
-                  </div>
-
-                  {/* Preferred Timeline (Optional Dropdown) */}
-                  <div>
-                    <label className="flex items-center justify-between text-xs font-mono uppercase mb-1.5 text-[#15252B] font-semibold">
-                      <span className="flex items-center gap-1.5">
-                        <Clock className="w-3.5 h-3.5 text-[#126B5B]" />
-                        <span>Timeline</span>
-                      </span>
-                      <span className="text-[10px] text-[#8A969B] font-normal normal-case">Optional</span>
-                    </label>
-                    <select
-                      value={formData.timeline}
-                      onChange={(e) => setFormData({ ...formData, timeline: e.target.value })}
-                      className="w-full px-3 py-2.5 rounded-xl bg-[#FAFAF7] border border-[#E5E9E6] focus:border-[#126B5B] text-[#15252B] text-xs sm:text-sm focus:outline-none focus:bg-white transition-colors cursor-pointer"
-                    >
-                      <option value="">Select timeline...</option>
-                      <option value="Urgent (< 1 week)">Urgent (&lt; 1 week)</option>
-                      <option value="1 – 2 weeks">1 – 2 weeks</option>
-                      <option value="2 – 4 weeks">2 – 4 weeks</option>
-                      <option value="1 – 2 months">1 – 2 months</option>
-                      <option value="Flexible timeline">Flexible timeline</option>
-                    </select>
-                  </div>
                 </div>
 
-                {/* Row 4: Project Requirements (Multiline Textarea with 1,000 char limit) */}
+                {/* Field 5: Project Requirements (Multiline Textarea, required) */}
                 <div>
                   <div className="flex items-center justify-between mb-1.5">
                     <label className="flex items-center gap-1.5 text-xs font-mono uppercase text-[#15252B] font-semibold">
@@ -573,7 +492,7 @@ export const RequestQuoteModal: React.FC<RequestQuoteModalProps> = ({
                     maxLength={1000}
                     value={formData.requirements}
                     onChange={(e) => setFormData({ ...formData, requirements: e.target.value })}
-                    placeholder="Describe your project scope, target features, architecture preferences, or specific deliverables..."
+                    placeholder="Describe your project requirements, goals, or deliverables..."
                     className={`w-full px-3.5 py-2.5 rounded-xl bg-[#FAFAF7] border ${
                       errors.requirements ? 'border-rose-500' : 'border-[#E5E9E6] focus:border-[#126B5B]'
                     } text-[#15252B] placeholder-[#8A969B] text-xs sm:text-sm focus:outline-none focus:bg-white transition-colors resize-none leading-relaxed`}
@@ -586,7 +505,7 @@ export const RequestQuoteModal: React.FC<RequestQuoteModalProps> = ({
                   )}
                 </div>
 
-                {/* Row 5: Prominent Submit Button */}
+                {/* Submit Button */}
                 <div className="pt-2">
                   <button
                     type="submit"
@@ -599,12 +518,12 @@ export const RequestQuoteModal: React.FC<RequestQuoteModalProps> = ({
                     {isSubmitting ? (
                       <>
                         <Loader2 className="w-4 h-4 animate-spin" />
-                        <span>Transmitting Quote Request...</span>
+                        <span>Submitting Enquiry...</span>
                       </>
                     ) : (
                       <>
                         <Send className="w-4 h-4" />
-                        <span>Submit Quote Request</span>
+                        <span>Send Enquiry</span>
                       </>
                     )}
                   </button>
@@ -612,7 +531,7 @@ export const RequestQuoteModal: React.FC<RequestQuoteModalProps> = ({
 
                 {/* Privacy Note */}
                 <p className="text-xs text-[#556368] text-center max-w-lg mx-auto leading-relaxed pt-1">
-                  Your information will only be used to respond to your inquiry. We respect your privacy and will not share your details unnecessarily.
+                  Your information will only be used to respond to your inquiry. We respect your privacy and will not share your details.
                 </p>
               </form>
             )}

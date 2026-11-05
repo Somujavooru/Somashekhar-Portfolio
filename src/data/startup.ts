@@ -14,6 +14,7 @@ export interface StartupConfig {
   description: string;
   missionQuote: string;
   websiteUrl: string | null;
+  customProjectUrl?: string | null;
   repositoryUrl: string | null;
   heroImage: string;
   logoImage: string;
@@ -32,6 +33,7 @@ export const EDUNOVA_STARTUP: StartupConfig = {
   missionQuote: 'Your project deadline is not the time to start from scratch. EduNova Forge delivers ready-to-submit engineering projects — IoT, ML, web, mobile, hardware — built for actual college requirements.',
   // Official EduNova Forge live website URL
   websiteUrl: 'https://edunova-forge.edunovaforge.workers.dev',
+  customProjectUrl: 'https://edunova-forge.edunovaforge.workers.dev/requests',
   repositoryUrl: 'https://github.com/Somujavooru/EduNova_Tech',
   heroImage: '/images/startup/edunova-forge-hero.png',
   logoImage: '/images/startup/edunova-forge-logo-tight.png',
@@ -92,4 +94,3 @@ export const FREELANCE_PRICING: Record<'engineering' | 'ecommerce' | 'automation
     currency: '₹',
   },
 };
-

@@ -23,6 +23,7 @@ export const PROFILE_CONFIG = {
     github: 'https://github.com/Somujavooru',
     linkedin: 'https://www.linkedin.com/in/somashekhar-javooru-34b70725a/',
     portfolio: 'https://github.com/Somujavooru',
+    codolio: 'https://codolio.com/profile/Somu_Javooru',
   },
   
   education: {

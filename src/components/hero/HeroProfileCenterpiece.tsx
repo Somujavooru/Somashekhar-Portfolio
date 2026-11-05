@@ -34,7 +34,7 @@ export const HeroProfileCenterpiece: React.FC<HeroProfileCenterpieceProps> = () 
   const imageSrc = PROFILE_CANDIDATE_PATHS[currentPathIndex];
 
   return (
-    <div className="relative w-full aspect-square max-w-[420px] sm:max-w-[480px] lg:max-w-[510px] xl:max-w-[550px] flex items-center justify-center select-none mx-auto">
+    <div className="relative w-full aspect-square max-w-[340px] sm:max-w-[400px] lg:max-w-[435px] xl:max-w-[485px] 2xl:max-w-[540px] flex items-center justify-center select-none mx-auto">
       {/* ========================================================
           1. DYNAMIC ORBITAL CONSTELLATION RINGS (SVG)
          ======================================================== */}
@@ -79,7 +79,7 @@ export const HeroProfileCenterpiece: React.FC<HeroProfileCenterpieceProps> = () 
         <circle
           cx="300"
           cy="300"
-          r="184"
+          r="196"
           stroke="#C99543"
           strokeWidth="1.4"
           strokeOpacity="0.75"
@@ -90,7 +90,7 @@ export const HeroProfileCenterpiece: React.FC<HeroProfileCenterpieceProps> = () 
         <circle
           cx="300"
           cy="300"
-          r="194"
+          r="206"
           stroke="#529E8D"
           strokeWidth="1"
           strokeDasharray="3 6"
@@ -222,7 +222,7 @@ export const HeroProfileCenterpiece: React.FC<HeroProfileCenterpieceProps> = () 
           2. CENTRAL CIRCULAR PORTRAIT FRAME
          ======================================================== */}
       <motion.div
-        className="relative z-10 w-[225px] h-[225px] sm:w-[285px] sm:h-[285px] lg:w-[325px] lg:h-[325px] xl:w-[360px] xl:h-[360px] rounded-full p-2 sm:p-2.5"
+        className="relative z-10 w-[205px] h-[205px] sm:w-[250px] sm:h-[250px] lg:w-[280px] lg:h-[280px] xl:w-[315px] xl:h-[315px] 2xl:w-[355px] 2xl:h-[355px] rounded-full p-2 sm:p-2.5"
         style={{
           background: 'linear-gradient(135deg, rgba(201,149,67,0.6) 0%, rgba(255,255,255,0.95) 45%, rgba(18,107,91,0.5) 100%)',
           boxShadow: '0 20px 50px -10px rgba(18,107,91,0.2), 0 10px 24px -6px rgba(201,149,67,0.15)',
@@ -274,116 +274,116 @@ export const HeroProfileCenterpiece: React.FC<HeroProfileCenterpieceProps> = () 
 
       {/* 1. IoT Badge (Top-Left / ~11:00 o'clock) */}
       <motion.div
-        className="absolute top-[12%] left-[10%] sm:left-[8%] lg:left-[6%] xl:left-[6%] z-20 bg-white/95 backdrop-blur-md px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-2xl border border-[#E5E9E6] shadow-[0_4px_16px_rgba(21,37,43,0.06)] flex items-center gap-1.5 sm:gap-2 cursor-default"
+        className="absolute top-[11%] left-[9%] sm:left-[7%] lg:left-[5%] xl:left-[5%] z-20 bg-white/95 backdrop-blur-md px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-xl sm:rounded-2xl border border-[#E5E9E6] shadow-[0_4px_16px_rgba(21,37,43,0.06)] flex items-center gap-1.5 sm:gap-2 cursor-default"
         animate={{ y: [0, -4, 0] }}
         transition={{ duration: 3.2, repeat: Infinity, ease: 'easeInOut' }}
         whileHover={{ scale: 1.05, borderColor: '#126B5B' }}
       >
-        <div className="w-6 h-6 sm:w-6.5 sm:h-6.5 rounded-xl bg-[#E8F4F0] flex items-center justify-center text-[#126B5B] shrink-0">
-          <Wifi className="w-3.5 h-3.5" />
+        <div className="w-5.5 h-5.5 sm:w-6 sm:h-6 rounded-lg sm:rounded-xl bg-[#E8F4F0] flex items-center justify-center text-[#126B5B] shrink-0">
+          <Wifi className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
         </div>
-        <span className="font-bold font-mono text-xs sm:text-[12.5px] text-[#15252B]">IoT</span>
+        <span className="font-bold font-mono text-[11px] sm:text-xs text-[#15252B]">IoT</span>
       </motion.div>
 
       {/* 2. MCU Badge (Top-Right / ~1:00 o'clock) */}
       <motion.div
-        className="absolute top-[12%] right-[10%] sm:right-[8%] lg:right-[6%] xl:right-[6%] z-20 bg-white/95 backdrop-blur-md px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-2xl border border-[#E5E9E6] shadow-[0_4px_16px_rgba(21,37,43,0.06)] flex items-center gap-1.5 sm:gap-2 cursor-default"
+        className="absolute top-[11%] right-[9%] sm:right-[7%] lg:right-[5%] xl:right-[5%] z-20 bg-white/95 backdrop-blur-md px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-xl sm:rounded-2xl border border-[#E5E9E6] shadow-[0_4px_16px_rgba(21,37,43,0.06)] flex items-center gap-1.5 sm:gap-2 cursor-default"
         animate={{ y: [0, -4, 0] }}
         transition={{ duration: 3.4, repeat: Infinity, ease: 'easeInOut', delay: 0.3 }}
         whileHover={{ scale: 1.05, borderColor: '#126B5B' }}
       >
-        <div className="w-6 h-6 sm:w-6.5 sm:h-6.5 rounded-xl bg-[#E8F4F0] flex items-center justify-center text-[#126B5B] shrink-0">
-          <Cpu className="w-3.5 h-3.5" />
+        <div className="w-5.5 h-5.5 sm:w-6 sm:h-6 rounded-lg sm:rounded-xl bg-[#E8F4F0] flex items-center justify-center text-[#126B5B] shrink-0">
+          <Cpu className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
         </div>
-        <span className="font-bold font-mono text-xs sm:text-[12.5px] text-[#15252B]">MCU</span>
+        <span className="font-bold font-mono text-[11px] sm:text-xs text-[#15252B]">MCU</span>
       </motion.div>
 
       {/* 3. Linux Developer Badge (Upper-Mid-Left / ~9:30 o'clock) */}
       <motion.div
-        className="absolute top-[36%] -translate-y-1/2 left-[-8%] sm:left-[-10%] lg:left-[-12%] xl:left-[-13%] z-20 bg-white/95 backdrop-blur-md px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-2xl border border-[#E5E9E6] shadow-[0_4px_16px_rgba(21,37,43,0.06)] flex items-center gap-1.5 sm:gap-2 cursor-default"
+        className="absolute top-[36%] -translate-y-1/2 left-[-7%] sm:left-[-9%] lg:left-[-11%] xl:left-[-11%] z-20 bg-white/95 backdrop-blur-md px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-xl sm:rounded-2xl border border-[#E5E9E6] shadow-[0_4px_16px_rgba(21,37,43,0.06)] flex items-center gap-1.5 sm:gap-2 cursor-default"
         animate={{ y: [0, 4, 0] }}
         transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut', delay: 0.4 }}
         whileHover={{ scale: 1.05, borderColor: '#126B5B' }}
       >
-        <div className="w-6 h-6 sm:w-6.5 sm:h-6.5 rounded-xl bg-[#E8F4F0] flex items-center justify-center text-[#126B5B] shrink-0">
-          <Terminal className="w-3.5 h-3.5" />
+        <div className="w-5.5 h-5.5 sm:w-6 sm:h-6 rounded-lg sm:rounded-xl bg-[#E8F4F0] flex items-center justify-center text-[#126B5B] shrink-0">
+          <Terminal className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
         </div>
-        <span className="font-bold font-mono text-xs sm:text-[12.5px] text-[#15252B]">Linux Developer</span>
+        <span className="font-bold font-mono text-[11px] sm:text-xs text-[#15252B]">Linux Developer</span>
       </motion.div>
 
       {/* 4. Firmware Developer Badge (Upper-Mid-Right / ~2:30 o'clock) */}
       <motion.div
-        className="absolute top-[36%] -translate-y-1/2 right-[-8%] sm:right-[-10%] lg:right-[-12%] xl:right-[-13%] z-20 bg-white/95 backdrop-blur-md px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-2xl border border-[#E5E9E6] shadow-[0_4px_16px_rgba(21,37,43,0.06)] flex items-center gap-1.5 sm:gap-2 cursor-default"
+        className="absolute top-[36%] -translate-y-1/2 right-[-7%] sm:right-[-9%] lg:right-[-11%] xl:right-[-11%] z-20 bg-white/95 backdrop-blur-md px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-xl sm:rounded-2xl border border-[#E5E9E6] shadow-[0_4px_16px_rgba(21,37,43,0.06)] flex items-center gap-1.5 sm:gap-2 cursor-default"
         animate={{ y: [0, -4, 0] }}
         transition={{ duration: 3.6, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
         whileHover={{ scale: 1.05, borderColor: '#126B5B' }}
       >
-        <div className="w-6 h-6 sm:w-6.5 sm:h-6.5 rounded-xl bg-[#E8F4F0] flex items-center justify-center text-[#126B5B] shrink-0">
-          <Code2 className="w-3.5 h-3.5" />
+        <div className="w-5.5 h-5.5 sm:w-6 sm:h-6 rounded-lg sm:rounded-xl bg-[#E8F4F0] flex items-center justify-center text-[#126B5B] shrink-0">
+          <Code2 className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
         </div>
-        <span className="font-bold font-mono text-xs sm:text-[12.5px] text-[#15252B]">Firmware Developer</span>
+        <span className="font-bold font-mono text-[11px] sm:text-xs text-[#15252B]">Firmware Developer</span>
       </motion.div>
 
       {/* 5. C/C++ Badge (Lower-Mid-Left / ~8:00 o'clock) */}
       <motion.div
-        className="absolute top-[58%] -translate-y-1/2 left-[2%] sm:left-[1%] lg:left-[0%] xl:left-[0%] z-20 bg-white/95 backdrop-blur-md px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-2xl border border-[#E5E9E6] shadow-[0_4px_16px_rgba(21,37,43,0.06)] flex items-center gap-1.5 sm:gap-2 cursor-default"
+        className="absolute top-[58%] -translate-y-1/2 left-[1%] sm:left-[0%] lg:left-[-1%] xl:left-[-1%] z-20 bg-white/95 backdrop-blur-md px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-xl sm:rounded-2xl border border-[#E5E9E6] shadow-[0_4px_16px_rgba(21,37,43,0.06)] flex items-center gap-1.5 sm:gap-2 cursor-default"
         animate={{ y: [0, 4, 0] }}
         transition={{ duration: 3.6, repeat: Infinity, ease: 'easeInOut', delay: 0.6 }}
         whileHover={{ scale: 1.05, borderColor: '#126B5B' }}
       >
-        <div className="w-6 h-6 sm:w-6.5 sm:h-6.5 rounded-xl bg-[#E8F4F0] flex items-center justify-center text-[#126B5B] font-mono font-bold text-xs shrink-0">
+        <div className="w-5.5 h-5.5 sm:w-6 sm:h-6 rounded-lg sm:rounded-xl bg-[#E8F4F0] flex items-center justify-center text-[#126B5B] font-mono font-bold text-[10px] sm:text-xs shrink-0">
           &lt;/&gt;
         </div>
-        <span className="font-bold font-mono text-xs sm:text-[12.5px] text-[#15252B]">C/C++</span>
+        <span className="font-bold font-mono text-[11px] sm:text-xs text-[#15252B]">C/C++</span>
       </motion.div>
 
       {/* 6. Embedded Systems Badge (Lower-Mid-Right / ~4:00 o'clock) */}
       <motion.div
-        className="absolute top-[58%] -translate-y-1/2 right-[-6%] sm:right-[-7%] lg:right-[-8%] xl:right-[-9%] z-20 bg-white/95 backdrop-blur-md px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-2xl border border-[#E5E9E6] shadow-[0_4px_16px_rgba(21,37,43,0.06)] flex items-center gap-1.5 sm:gap-2 cursor-default"
+        className="absolute top-[58%] -translate-y-1/2 right-[-5%] sm:right-[-7%] lg:right-[-8%] xl:right-[-8%] z-20 bg-white/95 backdrop-blur-md px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-xl sm:rounded-2xl border border-[#E5E9E6] shadow-[0_4px_16px_rgba(21,37,43,0.06)] flex items-center gap-1.5 sm:gap-2 cursor-default"
         animate={{ y: [0, -4, 0] }}
         transition={{ duration: 3.8, repeat: Infinity, ease: 'easeInOut', delay: 0.7 }}
         whileHover={{ scale: 1.05, borderColor: '#126B5B' }}
       >
-        <div className="w-6 h-6 sm:w-6.5 sm:h-6.5 rounded-xl bg-[#E8F4F0] flex items-center justify-center text-[#126B5B] shrink-0">
-          <Layers className="w-3.5 h-3.5" />
+        <div className="w-5.5 h-5.5 sm:w-6 sm:h-6 rounded-lg sm:rounded-xl bg-[#E8F4F0] flex items-center justify-center text-[#126B5B] shrink-0">
+          <Layers className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
         </div>
-        <span className="font-bold font-mono text-xs sm:text-[12.5px] text-[#15252B]">Embedded Systems</span>
+        <span className="font-bold font-mono text-[11px] sm:text-xs text-[#15252B]">Embedded Systems</span>
       </motion.div>
 
       {/* 7. RTOS Badge (Lower-Left / ~7:00 o'clock) */}
       <motion.div
-        className="absolute bottom-[13%] left-[10%] sm:left-[8%] lg:left-[6%] xl:left-[6%] z-20 bg-white/95 backdrop-blur-md px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-2xl border border-[#E5E9E6] shadow-[0_4px_16px_rgba(21,37,43,0.06)] flex items-center gap-1.5 sm:gap-2 cursor-default"
+        className="absolute bottom-[12%] left-[9%] sm:left-[7%] lg:left-[5%] xl:left-[5%] z-20 bg-white/95 backdrop-blur-md px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-xl sm:rounded-2xl border border-[#E5E9E6] shadow-[0_4px_16px_rgba(21,37,43,0.06)] flex items-center gap-1.5 sm:gap-2 cursor-default"
         animate={{ y: [0, 4, 0] }}
         transition={{ duration: 3.0, repeat: Infinity, ease: 'easeInOut', delay: 0.8 }}
         whileHover={{ scale: 1.05, borderColor: '#126B5B' }}
       >
-        <div className="w-6 h-6 sm:w-6.5 sm:h-6.5 rounded-xl bg-[#E8F4F0] flex items-center justify-center text-[#126B5B] shrink-0">
-          <Settings className="w-3.5 h-3.5" />
+        <div className="w-5.5 h-5.5 sm:w-6 sm:h-6 rounded-lg sm:rounded-xl bg-[#E8F4F0] flex items-center justify-center text-[#126B5B] shrink-0">
+          <Settings className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
         </div>
-        <span className="font-bold font-mono text-xs sm:text-[12.5px] text-[#15252B]">RTOS</span>
+        <span className="font-bold font-mono text-[11px] sm:text-xs text-[#15252B]">RTOS</span>
       </motion.div>
 
       {/* 8. Python Badge (Lower-Right / ~5:00 o'clock) */}
       <motion.div
-        className="absolute bottom-[13%] right-[10%] sm:right-[8%] lg:right-[6%] xl:right-[6%] z-20 bg-white/95 backdrop-blur-md px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-2xl border border-[#E5E9E6] shadow-[0_4px_16px_rgba(21,37,43,0.06)] flex items-center gap-1.5 sm:gap-2 cursor-default"
+        className="absolute bottom-[12%] right-[9%] sm:right-[7%] lg:right-[5%] xl:right-[5%] z-20 bg-white/95 backdrop-blur-md px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-xl sm:rounded-2xl border border-[#E5E9E6] shadow-[0_4px_16px_rgba(21,37,43,0.06)] flex items-center gap-1.5 sm:gap-2 cursor-default"
         animate={{ y: [0, -4, 0] }}
         transition={{ duration: 2.9, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
         whileHover={{ scale: 1.05, borderColor: '#126B5B' }}
       >
-        <div className="w-6 h-6 sm:w-6.5 sm:h-6.5 rounded-xl bg-[#E8F4F0] flex items-center justify-center text-[#126B5B] shrink-0">
+        <div className="w-5.5 h-5.5 sm:w-6 sm:h-6 rounded-lg sm:rounded-xl bg-[#E8F4F0] flex items-center justify-center text-[#126B5B] shrink-0">
           <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
             <path d="M11.914 0C5.833 0 6.207 2.64 6.207 2.64l.007 2.733h5.792v.82H3.978S0 5.742 0 11.838c0 6.094 3.486 5.867 3.486 5.867h2.079v-2.916s-.112-3.486 3.407-3.486h5.856v-.82H9.006s-3.327.186-3.327-3.245c0-3.432 2.996-3.327 2.996-3.327h8.847S21.6 4.025 21.6 9.878c0 5.852-3.364 5.74-3.364 5.74h-2.12v-2.916s.187-3.486-3.327-3.486H6.933" />
           </svg>
         </div>
-        <span className="font-bold font-mono text-xs sm:text-[12.5px] text-[#15252B]">Python</span>
+        <span className="font-bold font-mono text-[11px] sm:text-xs text-[#15252B]">Python</span>
       </motion.div>
 
       {/* ========================================================
           4. HANDWRITTEN SIGNATURE SCRIPT (Bottom-Right)
          ======================================================== */}
-      <div className="absolute -bottom-6 sm:-bottom-7 right-2 sm:right-6 xl:right-8 z-20 pointer-events-none select-none font-signature text-[2.5rem] sm:text-[3rem] xl:text-[3.3rem] text-[#224047] -rotate-[8deg] leading-[0.88] opacity-95 drop-shadow-xs text-right">
+      <div className="absolute -bottom-5 sm:-bottom-6 lg:-bottom-5 xl:-bottom-6 right-2 sm:right-4 xl:right-6 z-20 pointer-events-none select-none font-signature text-[2.1rem] sm:text-[2.5rem] lg:text-[2.5rem] xl:text-[2.85rem] 2xl:text-[3.2rem] text-[#224047] -rotate-[8deg] leading-[0.88] opacity-95 drop-shadow-xs text-right">
         <div>Somashekhar</div>
-        <div className="translate-x-3 sm:translate-x-4 mt-0.5">Javooru</div>
+        <div className="translate-x-2.5 sm:translate-x-3.5 mt-0.5">Javooru</div>
       </div>
     </div>
   );

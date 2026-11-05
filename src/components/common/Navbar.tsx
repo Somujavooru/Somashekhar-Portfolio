@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, ArrowDown } from 'lucide-react';
+import { Menu, X, ArrowDown, Code2 } from 'lucide-react';
 import { GithubIcon, LinkedinIcon } from './SocialIcons';
 import { useScrollSpy } from '../../hooks/useScrollSpy';
 import { PROFILE_CONFIG } from '../../data/profile';
@@ -157,6 +157,15 @@ export const Navbar: React.FC = () => {
             >
               <LinkedinIcon className="w-4 h-4" />
             </a>
+            <a
+              href={PROFILE_CONFIG.links.codolio || 'https://codolio.com/profile/Somu_Javooru'}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2 rounded-full text-[#126B5B] hover:text-[#0E5548] hover:bg-black/5 transition-all"
+              aria-label="Codolio Profile"
+            >
+              <Code2 className="w-4 h-4" strokeWidth={2.5} />
+            </a>
             <button
               ref={desktopResumeBtnRef}
               type="button"
@@ -256,6 +265,16 @@ export const Navbar: React.FC = () => {
               >
                 <LinkedinIcon className="w-4 h-4" />
                 <span>LinkedIn</span>
+              </a>
+              <span className="text-black/15">•</span>
+              <a
+                href={PROFILE_CONFIG.links.codolio || 'https://codolio.com/profile/Somu_Javooru'}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 text-xs hover:text-[#126B5B] text-[#126B5B]"
+              >
+                <Code2 className="w-4 h-4" strokeWidth={2.5} />
+                <span>Codolio</span>
               </a>
             </div>
           </div>
